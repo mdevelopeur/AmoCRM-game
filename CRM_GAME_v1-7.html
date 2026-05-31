@@ -1,0 +1,2919 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>⚔️ CRM ARENA — Гарантия Качества</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#F5C842;--gold2:#E8A020;--gold3:#FFF3A3;
+  --accent:#22D3EE;--accent2:#818CF8;--accent3:#34D399;
+  --red:#F87171;--orange:#FB923C;--purple:#A78BFA;
+  --dark:#080B14;--dark2:#0D1117;--dark3:#111827;
+  --panel:#141C2B;--panel2:#1A2540;--panel3:#1F2D45;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:rgba(255,255,255,.88);--text2:rgba(255,255,255,.55);--text3:rgba(255,255,255,.32);
+  --r:10px;--r2:14px;--r3:18px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+}
+html{font-size:15px}
+body{font-family:Inter,sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5}
+
+/* ── ANIMATED BACKGROUND ─────────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 800px 600px at 15% 30%,rgba(129,140,248,.06) 0,transparent 70%),
+    radial-gradient(ellipse 600px 400px at 85% 15%,rgba(34,211,238,.05) 0,transparent 70%),
+    radial-gradient(ellipse 900px 700px at 50% 90%,rgba(245,200,66,.04) 0,transparent 70%);
+  pointer-events:none;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:64px 64px;pointer-events:none;
+}
+
+/* ── SCROLLBAR ───────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+
+/* ── AUTH SCREEN ─────────────────────────────────────────── */
+#authScreen{
+  display:none;position:fixed;inset:0;z-index:10000;
+  background:var(--dark);
+  flex-direction:column;align-items:center;justify-content:center;gap:0;
+}
+#authScreen.show{display:flex}
+.auth-wrap{width:420px;max-width:96vw;padding:0 16px}
+.auth-logo{text-align:center;margin-bottom:32px}
+.auth-logo .logo-icon{font-size:3rem;display:block;margin-bottom:8px}
+.auth-logo .logo-title{
+  font-family:Orbitron,sans-serif;font-size:1.8rem;font-weight:900;
+  background:linear-gradient(135deg,var(--gold),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.auth-logo .logo-sub{font-size:.75rem;color:var(--text3);letter-spacing:.2em;margin-top:4px;text-transform:uppercase}
+.auth-card{
+  background:var(--panel);border:1px solid var(--border2);border-radius:var(--r3);
+  padding:28px;
+}
+.auth-label{font-size:.75rem;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.auth-mgr{
+  padding:12px 8px;background:var(--panel2);border:1.5px solid var(--border);
+  border-radius:var(--r);cursor:pointer;text-align:center;transition:all .18s;
+}
+.auth-mgr:hover{border-color:var(--accent);background:rgba(34,211,238,.07)}
+.auth-mgr.sel{border-color:var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.12)}
+.auth-mgr .am-icon{font-size:1.4rem;margin-bottom:4px}
+.auth-mgr .am-name{font-size:.82rem;font-weight:600}
+.auth-mgr .am-pts{font-size:.75rem;color:var(--gold);font-family:Orbitron,sans-serif;font-weight:700}
+.auth-pin-wrap{display:none}
+.auth-pin-label{font-size:.78rem;color:var(--text2);margin-bottom:8px}
+.auth-pin-input{
+  width:100%;padding:11px 16px;background:var(--panel2);border:1.5px solid var(--border2);
+  border-radius:var(--r);color:#fff;font-family:Inter,sans-serif;font-size:1.1rem;
+  text-align:center;letter-spacing:.2em;outline:none;transition:border-color .18s;
+  margin-bottom:12px;
+}
+.auth-pin-input:focus{border-color:var(--accent)}
+.auth-btn{
+  width:100%;padding:12px;border:none;border-radius:var(--r);cursor:pointer;
+  font-family:Inter,sans-serif;font-weight:700;font-size:.9rem;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#fff;transition:all .18s;
+}
+.auth-btn:hover{opacity:.9;transform:translateY(-1px)}
+.auth-err{font-size:.75rem;color:var(--red);text-align:center;margin-top:8px;min-height:18px}
+.auth-rop-link{
+  text-align:center;margin-top:14px;font-size:.78rem;color:var(--text3);
+  cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .15s;
+}
+.auth-rop-link:hover{color:var(--gold)}
+.auth-back{font-size:.74rem;color:var(--text3);cursor:pointer;text-align:center;margin-top:10px}
+.auth-back:hover{color:var(--text2)}
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+#mainWrap{display:none;position:relative;z-index:1;min-height:100vh}
+.app{display:grid;grid-template-columns:260px 1fr 300px;grid-template-rows:auto 1fr;min-height:100vh;gap:0}
+
+/* ── TOPBAR ──────────────────────────────────────────────── */
+.topbar{
+  grid-column:1/-1;display:flex;align-items:center;gap:16px;
+  padding:12px 20px;
+  background:rgba(13,17,23,.9);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;
+}
+.tb-logo{
+  font-family:Orbitron,sans-serif;font-weight:900;font-size:1rem;
+  background:linear-gradient(135deg,var(--gold),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap;
+}
+.tb-season{font-size:.72rem;color:var(--text3);white-space:nowrap}
+.tb-timer{
+  font-family:Orbitron,sans-serif;font-size:.82rem;font-weight:700;
+  color:var(--gold);background:rgba(245,200,66,.08);padding:4px 10px;
+  border-radius:6px;border:1px solid rgba(245,200,66,.2);white-space:nowrap;
+}
+.tb-status{
+  display:flex;align-items:center;gap:6px;font-size:.74rem;
+  padding:4px 12px;border-radius:20px;white-space:nowrap;
+}
+.tb-status.open{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);color:var(--accent3)}
+.tb-status.closed{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:var(--red)}
+.tb-dot{width:6px;height:6px;border-radius:50%;animation:blink 1.5s infinite}
+.tb-status.open .tb-dot{background:var(--accent3)}
+.tb-status.closed .tb-dot{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.tb-clock{font-size:.72rem;color:var(--text3);font-family:Orbitron,sans-serif}
+.tb-spacer{flex:1}
+.tb-btn{
+  padding:6px 14px;border-radius:8px;border:1px solid var(--border2);
+  background:var(--panel2);color:var(--text2);font-family:Inter,sans-serif;
+  font-size:.74rem;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap;
+}
+.tb-btn:hover{border-color:var(--border2);color:#fff;background:var(--panel3)}
+.tb-btn.rop{border-color:rgba(245,200,66,.3);color:var(--gold)}
+.tb-btn.rop:hover{background:rgba(245,200,66,.08)}
+.tb-btn.hist{border-color:rgba(34,211,238,.3);color:var(--accent);display:none}
+
+/* ── LEFT SIDEBAR ────────────────────────────────────────── */
+.sidebar{
+  background:rgba(13,17,23,.6);border-right:1px solid var(--border);
+  padding:16px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
+}
+
+/* SCORE WIDGET */
+.score-widget{
+  background:linear-gradient(135deg,rgba(245,200,66,.08),rgba(34,211,238,.05));
+  border:1px solid rgba(245,200,66,.15);border-radius:var(--r2);
+  padding:16px;text-align:center;
+}
+.sw-name{font-size:.7rem;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.sw-score{
+  font-family:Orbitron,sans-serif;font-size:2.6rem;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:2px;
+}
+.sw-rank{font-size:.72rem;color:var(--text3);margin-bottom:10px}
+.sw-prog{height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:6px}
+.sw-prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+.sw-prog-lbl{font-size:.66rem;color:var(--text3);margin-bottom:12px}
+.sw-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding-top:10px;border-top:1px solid var(--border)}
+.sw-stat{text-align:center}
+.sw-stat-n{font-family:Orbitron,sans-serif;font-size:1rem;font-weight:700;color:var(--accent)}
+.sw-stat-l{font-size:.6rem;color:var(--text3)}
+
+/* PRIZE PROGRESS */
+.prize-prog-widget{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);padding:12px}
+.ppw-title{font-size:.68rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.ppw-item{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ppw-item:last-child{margin-bottom:0}
+.ppw-icon{font-size:1.1rem;flex-shrink:0}
+.ppw-info{flex:1;min-width:0}
+.ppw-name{font-size:.72rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ppw-pts{font-size:.65rem;color:var(--text3)}
+.ppw-bar{height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-top:3px}
+.ppw-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* SIDEBAR MINI BOXES */
+.side-box{background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.side-box-hdr{
+  padding:10px 12px;border-bottom:1px solid var(--border);
+  font-size:.68rem;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.side-box-body{padding:10px 12px}
+.side-box-btn{
+  font-size:.64rem;padding:3px 8px;border-radius:6px;border:1px solid var(--border2);
+  background:transparent;color:var(--text3);cursor:pointer;font-family:Inter,sans-serif;transition:all .15s;
+}
+.side-box-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── MAIN CONTENT ────────────────────────────────────────── */
+.main-col{
+  display:flex;flex-direction:column;overflow:hidden;
+  background:var(--dark2);
+}
+.main-hdr{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.main-hdr-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.main-title{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:6px}
+.task-count{
+  font-size:.72rem;padding:3px 10px;border-radius:20px;
+  background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);color:var(--accent);
+}
+.fire-badge2{
+  font-size:.7rem;padding:3px 10px;border-radius:20px;
+  background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:var(--red);
+  font-weight:600;
+}
+.season-bar{display:flex;align-items:center;gap:8px}
+.sbar-lbl{font-size:.66rem;color:var(--text3)}
+.sbar-prog{width:80px;height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.sbar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s}
+.sbar-pct{font-size:.66rem;color:var(--text3)}
+
+/* FILTERS */
+.filters{
+  display:flex;gap:6px;padding:10px 18px;border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.f-chip{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text3);font-family:Inter,sans-serif;
+  font-size:.72rem;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.f-chip:hover{border-color:var(--border2);color:var(--text)}
+.f-chip.active{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3);color:var(--accent)}
+.f-chip.f-comp.active{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.3);color:var(--orange)}
+.f-chip.f-ref.active{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.3);color:var(--purple)}
+
+/* TASK LIST */
+.task-list{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+
+/* TASK CARD */
+.task-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--r2);
+  padding:14px 16px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;
+}
+.task-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.task-card.urgent::before{background:var(--red)}
+.task-card.hot::before{background:var(--orange)}
+.task-card.warm::before{background:var(--gold)}
+.task-card.cool::before{background:var(--accent)}
+.task-card:hover{border-color:var(--border2);background:var(--panel2);transform:translateX(2px)}
+.task-card.done{opacity:.3;pointer-events:none}.task-card.done::before{background:var(--accent3)}
+.task-card.pending{opacity:.7;border-color:rgba(245,200,66,.2)}.task-card.pending::before{background:var(--gold);animation:blink 1.5s infinite}
+.task-card.rejected{opacity:.25;pointer-events:none}.task-card.rejected::before{background:var(--red)}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.tc-client{font-weight:600;font-size:.85rem;line-height:1.35;flex:1}
+.tc-pts{
+  font-family:Orbitron,sans-serif;font-size:.75rem;font-weight:700;color:var(--gold);
+  background:rgba(245,200,66,.08);padding:3px 9px;border-radius:20px;
+  border:1px solid rgba(245,200,66,.18);white-space:nowrap;flex-shrink:0;
+}
+.tc-action{display:flex;align-items:center;gap:5px;font-size:.77rem;font-weight:600;color:var(--text2);margin-bottom:4px}
+.tc-reason{font-size:.7rem;color:var(--text3);line-height:1.4}
+.tc-tags{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+.tg{font-size:.62rem;padding:2px 7px;border-radius:6px;font-weight:600;letter-spacing:.02em}
+.tg-a{background:rgba(52,211,153,.1);color:var(--accent3);border:1px solid rgba(52,211,153,.2)}
+.tg-b{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.18)}
+.tg-c{background:rgba(255,255,255,.05);color:var(--text3);border:1px solid var(--border)}
+.tg-sum{background:rgba(34,211,238,.08);color:var(--accent);border:1px solid rgba(34,211,238,.15)}
+.tg-mo{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.15)}
+.tg-comp{background:rgba(251,146,60,.08);color:var(--orange);border:1px solid rgba(251,146,60,.15)}
+.tg-ref{background:rgba(167,139,250,.08);color:var(--purple);border:1px solid rgba(167,139,250,.15)}
+.tg-pend{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.2);animation:blink 1.5s infinite}
+
+/* SCRIPT + ACTIONS */
+.tc-script-toggle{
+  font-size:.66rem;color:rgba(34,211,238,.6);cursor:pointer;margin-top:8px;
+  display:inline-flex;align-items:center;gap:4px;
+  border-bottom:1px dashed rgba(34,211,238,.25);padding-bottom:1px;transition:color .15s;
+}
+.tc-script-toggle:hover{color:var(--accent)}
+.tc-script-box{
+  display:none;margin-top:8px;padding:10px 12px;background:rgba(34,211,238,.04);
+  border:1px solid rgba(34,211,238,.1);border-radius:var(--r);
+  font-size:.72rem;color:var(--text2);line-height:1.55;
+}
+.tc-script-box.open{display:block}
+.tc-actions{display:flex;gap:6px;margin-top:10px}
+.tc-do-btn{
+  flex:1;padding:8px 12px;border-radius:var(--r);border:none;cursor:pointer;
+  font-family:Inter,sans-serif;font-weight:700;font-size:.76rem;
+  transition:all .18s;
+}
+.tc-do-btn.call{background:linear-gradient(135deg,#0EA5E9,#2563EB);color:#fff}
+.tc-do-btn.remind{background:linear-gradient(135deg,#F59E0B,#FCD34D);color:#000}
+.tc-do-btn.offer{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff}
+.tc-do-btn.revive{background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff}
+.tc-do-btn:hover{transform:translateY(-1px);opacity:.9}
+.tc-sos{
+  padding:8px 10px;border-radius:var(--r);border:1px solid rgba(248,113,113,.25);
+  background:rgba(248,113,113,.08);color:var(--red);cursor:pointer;font-size:.7rem;
+  font-weight:700;font-family:Inter,sans-serif;transition:all .15s;white-space:nowrap;
+}
+.tc-sos:hover{background:rgba(248,113,113,.15)}
+
+/* ── RIGHT SIDEBAR ───────────────────────────────────────── */
+.right-col{
+  background:rgba(13,17,23,.6);border-left:1px solid var(--border);
+  overflow-y:auto;display:flex;flex-direction:column;gap:0;
+}
+.rc-section{border-bottom:1px solid var(--border);padding:14px}
+.rc-title{
+  font-size:.68rem;font-weight:600;color:var(--text3);letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;
+}
+.rc-btn{
+  font-size:.63rem;padding:3px 8px;border-radius:6px;border:1px solid var(--border2);
+  background:transparent;color:var(--text3);cursor:pointer;font-family:Inter,sans-serif;transition:all .15s;
+}
+.rc-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* LEADERBOARD */
+.lb-row{
+  display:flex;align-items:center;gap:8px;padding:8px 0;
+  border-bottom:1px solid var(--border);transition:background .15s;
+}
+.lb-row:last-child{border-bottom:none}
+.lb-row.me{background:rgba(245,200,66,.04);border-radius:var(--r);padding:8px 6px;margin:0 -6px}
+.lb-rank{font-family:Orbitron,sans-serif;font-size:.8rem;font-weight:900;width:22px;text-align:center;flex-shrink:0}
+.lb-rank.r1{color:var(--gold)}.lb-rank.r2{color:#B0B8C8}.lb-rank.r3{color:#CD7F32}
+.lb-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;border:2px solid}
+.lb-info{flex:1;min-width:0}
+.lb-name{font-size:.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-sub{font-size:.62rem;color:var(--text3)}
+.lb-pts{font-family:Orbitron,sans-serif;font-size:.8rem;font-weight:700;color:var(--gold);flex-shrink:0}
+
+/* FEED */
+.feed-item{
+  display:flex;gap:7px;font-size:.71rem;padding:6px 0;
+  border-bottom:1px solid var(--border);align-items:flex-start;
+}
+.feed-item:last-child{border-bottom:none}
+.feed-time{color:var(--text3);flex-shrink:0;width:36px;padding-top:1px}
+.feed-who{font-weight:600;flex-shrink:0}
+.feed-what{flex:1;color:var(--text2);line-height:1.4}
+
+/* TEAM CHALLENGE */
+.team-prog-bar{height:6px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin:8px 0 4px}
+.team-prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent3));transition:width .5s}
+
+/* DUEL */
+.duel-versus{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin:8px 0}
+.duel-side{text-align:center}
+.duel-score{font-family:Orbitron,sans-serif;font-size:1.5rem;font-weight:900}
+.duel-vs{font-family:Orbitron,sans-serif;font-size:.8rem;color:var(--red);font-weight:900}
+.duel-pbar{height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-bottom:4px}
+.duel-pfill{height:100%;border-radius:4px;transition:width .4s}
+.duel-pick{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.duel-pick-btn{
+  flex:1;min-width:80px;padding:5px 8px;border-radius:var(--r);border:1px solid var(--border);
+  background:transparent;color:var(--text2);font-family:Inter,sans-serif;font-size:.7rem;cursor:pointer;transition:all .15s;
+}
+.duel-pick-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* BOSS */
+.boss-hp-bar{height:6px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin:6px 0}
+.boss-hp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .5s}
+
+/* MAP */
+.map-grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.map-cell2{
+  padding:8px 4px;border-radius:var(--r);border:1px solid var(--border);
+  text-align:center;cursor:help;transition:all .18s;
+}
+.map-cell2:hover{border-color:var(--border2)}
+.map-cell2.mine{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.06)}
+.map-cell2 .mc-flag{font-size:.95rem}
+.map-cell2 .mc-name{font-size:.6rem;color:var(--text3);margin-top:2px}
+.map-cell2 .mc-cnt{font-size:.62rem;color:var(--text3)}
+.map-cell2 .mc-bar{height:2px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:4px;overflow:hidden}
+.map-cell2 .mc-bfill{height:100%;border-radius:2px;transition:width .4s}
+
+/* ROULETTE */
+.roulette-icon{font-size:2.2rem;display:block;text-align:center;margin:4px 0 8px;transition:transform .6s cubic-bezier(.34,1.56,.64,1)}
+.roulette-result{font-size:.75rem;color:var(--text2);text-align:center;min-height:18px;margin-bottom:8px}
+
+/* CARDS */
+.cards-row2{display:flex;gap:5px;flex-wrap:wrap}
+.power-card2{
+  flex:1;min-width:62px;padding:8px 5px;border-radius:var(--r);
+  border:1px solid rgba(167,139,250,.25);background:rgba(167,139,250,.07);
+  cursor:pointer;text-align:center;transition:all .18s;
+}
+.power-card2:hover{border-color:var(--purple);background:rgba(167,139,250,.14);transform:translateY(-2px)}
+.pc-icon2{font-size:1.1rem;margin-bottom:3px}
+.pc-name2{font-size:.57rem;font-weight:700;color:var(--purple);line-height:1.2}
+.cards-progress2{display:flex;align-items:center;gap:6px;margin-top:8px}
+.cp-bar2{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.cp-fill2{height:100%;border-radius:3px;background:var(--purple);transition:width .4s}
+.cp-txt2{font-size:.62rem;color:var(--text3);white-space:nowrap}
+
+/* ACHIEVEMENTS */
+.ach-grid2{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.ach2{
+  aspect-ratio:1;border-radius:var(--r);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;font-size:1rem;
+  border:1.5px solid;cursor:help;transition:all .2s;
+}
+.ach2.locked{opacity:.15;filter:grayscale(1);border-color:var(--border);background:rgba(255,255,255,.02)}
+.ach2.unlocked{border-color:rgba(245,200,66,.3);background:rgba(245,200,66,.06);animation:achglow 3s infinite}
+.ach2-n{font-size:.47rem;font-weight:600;color:var(--text3);text-align:center;line-height:1.2;padding:0 2px}
+@keyframes achglow{0%,100%{box-shadow:0 0 6px rgba(245,200,66,.1)}50%{box-shadow:0 0 14px rgba(245,200,66,.25)}}
+
+/* COMP CHART */
+.comp-row2{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.comp-name2{font-size:.7rem;color:var(--text2);width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+.comp-bar2{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.comp-fill2{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--orange),var(--gold));transition:width .5s}
+.comp-num2{font-size:.68rem;font-weight:700;color:var(--orange);min-width:16px;text-align:right;flex-shrink:0;font-family:Orbitron,sans-serif}
+
+/* HISTORY (right sidebar mini) */
+.hist-item2{display:flex;gap:6px;font-size:.7rem;padding:5px 0;border-bottom:1px solid var(--border)}
+.hist-item2:last-child{border-bottom:none}
+.hi-time{color:var(--text3);flex-shrink:0;width:36px}
+.hi-action{flex:1;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hi-pts{color:var(--accent3);font-weight:700;font-family:Orbitron,sans-serif;font-size:.68rem;flex-shrink:0}
+
+/* ── MODALS ───────────────────────────────────────────────── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal-box{
+  background:var(--panel2);border:1px solid var(--border2);border-radius:var(--r3);
+  padding:28px;width:440px;max-width:96vw;max-height:90vh;overflow-y:auto;
+}
+.modal-title{font-family:Orbitron,sans-serif;font-size:.9rem;color:var(--accent);letter-spacing:2px;margin-bottom:14px}
+.modal-client{
+  font-size:.85rem;color:var(--text2);margin-bottom:16px;padding:10px 14px;
+  background:var(--panel);border-radius:var(--r);border:1px solid var(--border);
+}
+.timer-bar{width:100%;height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:14px}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--accent3),var(--gold));border-radius:4px;transition:width .1s linear}
+.modal-q{font-size:.78rem;color:var(--text2);margin-bottom:8px}
+.modal-textarea{
+  width:100%;min-height:80px;padding:10px 14px;background:var(--panel);
+  border:1.5px solid var(--border2);border-radius:var(--r);color:#fff;
+  font-family:Inter,sans-serif;font-size:.84rem;resize:vertical;outline:none;transition:border-color .18s;
+}
+.modal-textarea:focus{border-color:var(--accent)}
+.modal-hint{font-size:.68rem;color:var(--text3);margin-top:6px;margin-bottom:12px}
+.modal-warn{font-size:.7rem;color:rgba(251,146,60,.8);padding:8px 12px;background:rgba(251,146,60,.08);border-radius:var(--r);border:1px solid rgba(251,146,60,.18);margin-bottom:14px}
+.modal-btns{display:flex;gap:8px}
+.modal-ok{
+  flex:1;padding:10px;background:linear-gradient(135deg,var(--accent3),var(--accent));
+  border:none;border-radius:var(--r);color:#000;font-family:Inter,sans-serif;font-weight:700;cursor:pointer;font-size:.86rem;transition:all .18s;
+}
+.modal-ok:hover{opacity:.9;transform:translateY(-1px)}
+.modal-cancel{
+  padding:10px 16px;background:transparent;border:1px solid var(--border2);
+  border-radius:var(--r);color:var(--text3);font-family:Inter,sans-serif;cursor:pointer;font-size:.84rem;transition:all .15s;
+}
+.modal-cancel:hover{border-color:var(--border2);color:var(--text)}
+
+/* MEGA MODAL */
+.mega-pts-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.mega-pts-btn{
+  flex:1;min-width:60px;padding:7px;border:1px solid var(--border2);border-radius:var(--r);
+  background:transparent;color:var(--text2);font-family:Inter,sans-serif;font-size:.74rem;font-weight:600;cursor:pointer;transition:all .15s;
+}
+.mega-pts-btn:hover,.mega-pts-btn.sel{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.3);color:var(--accent3)}
+.mega-amount-input{
+  width:100%;padding:10px 14px;background:var(--panel);border:1.5px solid var(--border2);
+  border-radius:var(--r);color:#fff;font-family:Inter,sans-serif;font-size:.9rem;
+  outline:none;margin-bottom:8px;transition:border-color .18s;
+}
+.mega-amount-input:focus{border-color:var(--accent3)}
+.mega-preview{font-size:.72rem;color:var(--accent3);margin-bottom:14px;text-align:center;min-height:18px}
+
+/* ADD PLAYER */
+.epick2{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.ep2{font-size:1.2rem;padding:6px 9px;border-radius:var(--r);border:2px solid transparent;cursor:pointer;transition:all .15s}
+.ep2.sel{border-color:var(--gold);background:rgba(245,200,66,.1)}
+.cpick2{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
+.cp2{width:24px;height:24px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .15s}
+.cp2.sel{border-color:#fff;transform:scale(1.15)}
+.modal-input{
+  width:100%;padding:10px 14px;background:var(--panel);border:1.5px solid var(--border2);
+  border-radius:var(--r);color:#fff;font-family:Inter,sans-serif;font-size:.88rem;
+  outline:none;margin-bottom:10px;transition:border-color .18s;
+}
+.modal-input:focus{border-color:var(--accent)}
+
+/* HISTORY MODAL */
+.hist-modal-box{width:860px;max-width:96vw}
+.fh-filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.fh-f{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:transparent;color:var(--text3);font-family:Inter,sans-serif;font-size:.7rem;cursor:pointer;transition:all .15s;
+}
+.fh-f.active{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3);color:var(--accent)}
+.fh-table{border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.fh-row{
+  display:grid;grid-template-columns:60px 90px 100px 1fr 80px 70px;gap:10px;
+  padding:9px 14px;border-bottom:1px solid var(--border);font-size:.73rem;align-items:start;
+}
+.fh-row:last-child{border-bottom:none}
+.fh-row.th{font-size:.65rem;font-weight:700;color:var(--text3);background:var(--panel);letter-spacing:.05em;text-transform:uppercase}
+.fh-row.pending{background:rgba(245,200,66,.03)}
+.fh-row.done{background:rgba(52,211,153,.03)}
+.fh-row.rejected{background:rgba(248,113,113,.03)}
+.fh-comment{font-size:.66rem;color:var(--text3);margin-top:2px;grid-column:4}
+.fh-s-done{color:var(--accent3);font-weight:700}.fh-s-pending{color:var(--gold);font-weight:700}.fh-s-rejected{color:var(--red);font-weight:700}
+
+/* ── NOTIFY ───────────────────────────────────────────────── */
+.toasts{position:fixed;top:70px;right:16px;z-index:1000;display:flex;flex-direction:column;gap:7px;pointer-events:none}
+.toast{
+  padding:10px 16px;border-radius:var(--r2);font-weight:600;font-size:.78rem;
+  animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);max-width:300px;
+  border:1px solid;pointer-events:auto;backdrop-filter:blur(10px);
+}
+.toast.success{background:rgba(52,211,153,.12);border-color:rgba(52,211,153,.25);color:var(--accent3)}
+.toast.points{background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.25);color:var(--gold);font-family:Orbitron,sans-serif;font-size:.72rem}
+.toast.achievement{background:rgba(167,139,250,.14);border-color:rgba(167,139,250,.3);color:var(--purple)}
+.toast.warn{background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.25);color:var(--orange)}
+@keyframes toastIn{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* COMBO */
+.combo-banner{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:600;text-align:center;pointer-events:none}
+.combo-banner.show{display:block;animation:comboPop 1.7s forwards}
+.combo-t{font-family:Orbitron,sans-serif;font-size:4rem;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.combo-s{font-family:Orbitron,sans-serif;font-size:1.3rem;color:var(--gold)}
+@keyframes comboPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:0}40%{transform:translate(-50%,-50%) scale(1.1);opacity:1}70%{transform:translate(-50%,-50%) scale(.93);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+
+/* CONFETTI PIECE */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:9999;animation:confettiFall 2.5s ease-in forwards}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* MOTIVATION */
+.motiv-popup{
+  display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  z-index:600;background:var(--panel2);border:1px solid rgba(245,200,66,.3);
+  border-radius:var(--r2);padding:14px 24px;text-align:center;min-width:240px;
+  animation:motivPop .4s cubic-bezier(.34,1.56,.64,1);
+}
+.motiv-popup.show{display:block}
+.motiv-emoji{font-size:1.8rem;margin-bottom:4px}
+.motiv-text{font-family:Orbitron,sans-serif;font-size:.78rem;color:var(--gold);font-weight:700}
+.motiv-sub{font-size:.68rem;color:var(--text3);margin-top:2px}
+@keyframes motivPop{from{transform:translateX(-50%) scale(.7);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+
+/* SPRINT */
+.sprint-bar{
+  display:none;padding:8px 18px;
+  background:linear-gradient(135deg,rgba(248,113,113,.08),rgba(251,146,60,.05));
+  border-bottom:1px solid rgba(248,113,113,.15);
+  font-size:.78rem;font-weight:700;color:var(--red);
+  align-items:center;gap:10px;
+  animation:sprintPulse 2s infinite;
+}
+.sprint-bar.show{display:flex}
+@keyframes sprintPulse{0%,100%{background:linear-gradient(135deg,rgba(248,113,113,.08),rgba(251,146,60,.05))}50%{background:linear-gradient(135deg,rgba(248,113,113,.13),rgba(251,146,60,.09))}}
+
+/* DAILY BONUS */
+.daily-bar{
+  display:flex;align-items:center;gap:12px;padding:9px 18px;
+  background:linear-gradient(135deg,rgba(245,200,66,.06),rgba(232,160,32,.04));
+  border-bottom:1px solid rgba(245,200,66,.12);
+}
+.daily-btn2{
+  padding:6px 14px;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border:none;border-radius:8px;font-family:Inter,sans-serif;font-weight:700;
+  font-size:.76rem;cursor:pointer;color:#000;transition:all .18s;white-space:nowrap;
+}
+.daily-btn2:hover{transform:scale(1.04)}
+.daily-btn2:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+/* VACATION */
+.vacation-btn2{
+  padding:3px 9px;border-radius:7px;border:1px solid rgba(34,211,238,.2);
+  background:transparent;color:var(--accent);font-family:Inter,sans-serif;
+  font-size:.64rem;font-weight:600;cursor:pointer;transition:all .15s;margin-left:5px;
+}
+.vacation-btn2:hover{background:rgba(34,211,238,.07)}
+
+/* RC GENERIC BTN */
+.rc-action-btn{
+  width:100%;padding:7px;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--panel);color:var(--text2);font-family:Inter,sans-serif;
+  font-size:.74rem;font-weight:600;cursor:pointer;transition:all .15s;text-align:center;
+  display:block;margin-top:8px;
+}
+.rc-action-btn:hover{border-color:var(--border2);color:var(--text)}
+.rc-action-btn.danger{border-color:rgba(248,113,113,.2);color:var(--red)}
+.rc-action-btn.danger:hover{background:rgba(248,113,113,.08)}
+.rc-action-btn.primary{background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.2);color:var(--accent)}
+.rc-action-btn.primary:hover{background:rgba(34,211,238,.14)}
+
+/* GENERAL */
+.empty-state{font-size:.72rem;color:var(--text3);text-align:center;padding:12px 0}
+
+@media(max-width:1100px){
+  .app{grid-template-columns:220px 1fr 260px}
+}
+@media(max-width:850px){
+  .app{grid-template-columns:1fr}
+  .sidebar,.right-col{display:none}
+}
+
+/* ── IMPORT MODALS ─────────────────────────────────────── */
+.import-box{width:620px;max-width:96vw}
+.import-tabs{display:flex;gap:2px;margin-bottom:18px;background:var(--panel);border-radius:var(--r);padding:3px}
+.import-tab{flex:1;padding:8px;border-radius:8px;border:none;background:transparent;color:var(--text2);font-family:Inter,sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .18s}
+.import-tab.active{background:var(--panel3);color:#fff;font-weight:600}
+
+.drop-zone{
+  border:2px dashed rgba(34,211,238,.25);border-radius:var(--r2);padding:32px 20px;
+  text-align:center;cursor:pointer;transition:all .2s;position:relative;
+  background:rgba(34,211,238,.02);margin-bottom:14px;
+}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);background:rgba(34,211,238,.06)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.dz-icon{font-size:2.4rem;margin-bottom:8px;display:block}
+.dz-title{font-size:.9rem;font-weight:600;margin-bottom:4px}
+.dz-sub{font-size:.74rem;color:var(--text3)}
+.dz-formats{font-size:.68rem;color:var(--text3);margin-top:6px}
+
+.parse-progress{display:none;margin-bottom:12px}
+.parse-progress.show{display:block}
+.pp-bar{height:5px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin:6px 0}
+.pp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent3));transition:width .3s}
+.pp-label{font-size:.74rem;color:var(--text2)}
+
+.parse-preview{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+  max-height:220px;overflow-y:auto;margin-bottom:14px;display:none;
+}
+.parse-preview.show{display:block}
+.pp-hdr{
+  display:grid;gap:8px;padding:8px 12px;
+  background:var(--panel2);border-bottom:1px solid var(--border);
+  font-size:.66rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;
+  position:sticky;top:0;
+}
+.pp-row{
+  display:grid;gap:8px;padding:7px 12px;border-bottom:1px solid var(--border);
+  font-size:.72rem;align-items:center;
+}
+.pp-row:last-child{border-bottom:none}
+.pp-row:hover{background:rgba(255,255,255,.02)}
+.pp-badge{font-size:.6rem;padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap}
+.pb-a{background:rgba(52,211,153,.12);color:var(--accent3)}
+.pb-b{background:rgba(245,200,66,.1);color:var(--gold)}
+.pb-c{background:rgba(255,255,255,.06);color:var(--text3)}
+.pb-comp{background:rgba(251,146,60,.1);color:var(--orange)}
+.pb-ref{background:rgba(167,139,250,.1);color:var(--purple)}
+
+.parse-stats{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;
+}
+.ps-chip{
+  padding:5px 12px;border-radius:20px;font-size:.72rem;font-weight:600;
+  background:var(--panel2);border:1px solid var(--border);
+}
+.ps-num{font-family:Orbitron,sans-serif;font-size:.85rem;margin-right:4px}
+
+.col-mapping{margin-bottom:14px;display:none}
+.col-mapping.show{display:block}
+.cm-title{font-size:.74rem;font-weight:600;color:var(--text3);margin-bottom:8px}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cm-row{display:flex;align-items:center;gap:8px}
+.cm-label{font-size:.72rem;color:var(--text2);min-width:90px}
+.cm-select{
+  flex:1;padding:5px 8px;background:var(--panel);border:1px solid var(--border2);
+  border-radius:6px;color:#fff;font-size:.72rem;font-family:Inter,sans-serif;outline:none;
+}
+.cm-select:focus{border-color:var(--accent)}
+
+.mgr-assign-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;display:none}
+.mgr-assign-grid.show{display:grid}
+.ma-row{display:flex;align-items:center;gap:8px;padding:8px;background:var(--panel);border-radius:var(--r);border:1px solid var(--border)}
+.ma-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.ma-name{flex:1;font-size:.76rem;font-weight:600}
+.ma-count{font-family:Orbitron,sans-serif;font-size:.78rem;color:var(--accent)}
+
+.import-warn{
+  font-size:.7rem;padding:8px 12px;background:rgba(251,146,60,.08);
+  border:1px solid rgba(251,146,60,.18);border-radius:var(--r);color:var(--orange);margin-bottom:12px;
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-wrap">
+    <div class="auth-logo">
+      <span class="logo-icon">⚔️</span>
+      <div class="logo-title">CRM ARENA</div>
+      <div class="logo-sub">Клиентские сражения · Сезон 1</div>
+    </div>
+    <div class="auth-card">
+      <div class="auth-label">Выбери своё имя</div>
+      <div class="auth-grid" id="authMgrGrid"></div>
+      <div class="auth-pin-wrap" id="authPinWrap">
+        <div class="auth-pin-label" id="authPinLabel">PIN-код (4 цифры):</div>
+        <input class="auth-pin-input" type="password" id="authPin" maxlength="10"
+          inputmode="numeric" placeholder="••••" onkeydown="if(event.key==='Enter')doAuth()">
+        <button class="auth-btn" onclick="doAuth()">ВОЙТИ →</button>
+        <div class="auth-err" id="authErr"></div>
+        <div class="auth-back" onclick="renderAuthGrid()">← Назад</div>
+      </div>
+      <div class="auth-rop-link" onclick="switchToRop()">👑 Вход для руководителя</div>
+    </div>
+  </div>
+</div>
+
+<!-- ИСТОРИЯ ДЕЙСТВИЙ (РОП) -->
+<div class="modal-bg" id="fullHistModal">
+  <div class="modal-box hist-modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="modal-title">📋 ИСТОРИЯ ДЕЙСТВИЙ</div>
+      <button class="modal-cancel" onclick="closeFullHist()">✕</button>
+    </div>
+    <div class="fh-filters">
+      <button class="fh-f active" onclick="fhFilter('all',this)">Все</button>
+      <button class="fh-f" onclick="fhFilter('pending',this)">⏳ На проверке</button>
+      <button class="fh-f" onclick="fhFilter('done',this)">✅ Выполнено</button>
+      <button class="fh-f" onclick="fhFilter('rejected',this)">❌ Отклонено</button>
+      <button class="fh-f" onclick="fhFilter('mega',this)">💰 Оплаты</button>
+    </div>
+    <div class="fh-table">
+      <div class="fh-row th"><div>Время</div><div>Менеджер</div><div>Клиент</div><div>Действие / Комментарий</div><div>Баллы</div><div>Статус</div></div>
+      <div id="fullHistRows"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- IMPORT MODAL -->
+<div class="modal-bg" id="importModal">
+  <div class="modal-box import-box">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div class="modal-title" id="importTitle">📥 ИМПОРТ БАЗЫ КЛИЕНТОВ</div>
+      <button class="modal-cancel" onclick="closeImport()">✕</button>
+    </div>
+
+    <!-- ВКЛАДКИ -->
+    <div class="import-tabs">
+      <button class="import-tab active" onclick="switchImportTab('upload',this)">📁 Загрузить файл</button>
+      <button class="import-tab" onclick="switchImportTab('paste',this)">📋 Вставить текст</button>
+    </div>
+
+    <!-- ЗАГРУЗКА ФАЙЛА -->
+    <div id="importTabUpload">
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="importFile" accept=".xlsx,.xls,.csv,.txt" onchange="handleFileSelect(event)">
+        <span class="dz-icon">📂</span>
+        <div class="dz-title">Перетащи файл или нажми для выбора</div>
+        <div class="dz-sub">Excel, CSV, или любой текстовый файл</div>
+        <div class="dz-formats">Поддерживается: .xlsx · .xls · .csv · .txt · любой формат с данными</div>
+      </div>
+    </div>
+
+    <!-- ВСТАВИТЬ ТЕКСТ -->
+    <div id="importTabPaste" style="display:none">
+      <textarea id="importPasteText"
+        style="width:100%;min-height:100px;padding:10px 14px;background:var(--panel);border:1.5px solid var(--border2);border-radius:var(--r);color:#fff;font-family:Inter,sans-serif;font-size:.8rem;resize:vertical;outline:none;margin-bottom:10px"
+        placeholder="Вставь данные из Excel (Ctrl+C → Ctrl+V), Google Sheets, или любой таблицы...&#10;&#10;Пример:&#10;ООО Ромашка  ИНН  +7-999-000-00-00  150000&#10;ИП Иванов  ИНН  mail@company.ru  75000"></textarea>
+      <button class="modal-ok" onclick="parsePastedText()" style="width:100%;margin-bottom:12px;background:linear-gradient(135deg,var(--accent2),var(--accent))">
+        🔍 Распознать данные
+      </button>
+    </div>
+
+    <!-- ПРОГРЕСС ПАРСИНГА -->
+    <div class="parse-progress" id="parseProgress">
+      <div class="pp-label" id="parseLabel">Анализирую файл...</div>
+      <div class="pp-bar"><div class="pp-fill" id="parseFill" style="width:0%"></div></div>
+    </div>
+
+    <!-- МАППИНГ КОЛОНОК -->
+    <div class="col-mapping" id="colMapping">
+      <div class="cm-title">🔧 Укажи что в каких колонках (если не определилось автоматически):</div>
+      <div class="cm-grid" id="colMappingGrid"></div>
+    </div>
+
+    <!-- СТАТИСТИКА -->
+    <div class="parse-stats" id="parseStats" style="display:none"></div>
+
+    <!-- ПРЕДПРОСМОТР -->
+    <div class="parse-preview" id="parsePreview">
+      <div class="pp-hdr" id="parsePreviewHdr" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr"></div>
+      <div id="parsePreviewRows"></div>
+    </div>
+
+    <!-- ПРЕДУПРЕЖДЕНИЕ -->
+    <div class="import-warn" id="importWarnDup" style="display:none">
+      ⚠️ Часть компаний уже есть в базе — будут обновлены, не дублированы.
+    </div>
+
+    <!-- НАЗНАЧЕНИЕ МЕНЕДЖЕРОВ -->
+    <div id="mgrAssignWrap" style="display:none;margin-bottom:14px">
+      <div style="font-size:.74rem;font-weight:600;color:var(--text3);margin-bottom:8px">👤 Распределить между менеджерами:</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px" id="mgrAssignBtns">
+        <button class="tb-btn" onclick="assignImportTo('auto')" id="assignAuto"
+          style="border-color:rgba(34,211,238,.3);color:var(--accent)">🎲 Авто (равномерно)</button>
+        <button class="tb-btn" onclick="assignImportTo('liza')" id="assignLiza">Лизе</button>
+        <button class="tb-btn" onclick="assignImportTo('roman')">Роману</button>
+        <button class="tb-btn" onclick="assignImportTo('yana')">Яне</button>
+        <button class="tb-btn" onclick="assignImportTo('svetlana')">Светлане</button>
+        <button class="tb-btn" onclick="assignImportTo('ekaterina')">Екатерине</button>
+      </div>
+      <div class="mgr-assign-grid" id="mgrAssignGrid"></div>
+    </div>
+
+    <!-- КНОПКИ ДЕЙСТВИЙ -->
+    <div class="modal-btns" id="importActionBtns" style="display:none">
+      <button class="modal-ok" id="importConfirmBtn" onclick="confirmImport()">
+        ✅ Добавить в базу игры
+      </button>
+      <button class="modal-cancel" onclick="closeImport()">Отмена</button>
+    </div>
+
+    <div style="font-size:.66rem;color:var(--text3);margin-top:10px;text-align:center" id="importHint">
+      Поддерживаются любые форматы: выписки банка, экспорт CRM, прайсы, справочники
+    </div>
+  </div>
+</div>
+
+<!-- PROOF MODAL -->
+<div class="modal-bg" id="proofModal">
+  <div class="modal-box">
+    <div class="modal-title">✅ ПОДТВЕРДИТЕ ДЕЙСТВИЕ</div>
+    <div class="modal-client" id="proofClient">Клиент...</div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    <div class="modal-q">Опишите что именно вы сделали:</div>
+    <textarea class="modal-textarea" id="proofText"
+      placeholder="Напр.: Позвонил Ивану Петровичу (+7-999-123-45-67), обсудили декларацию ТР ТС, он отправит технический паспорт в пятницу..."></textarea>
+    <div class="modal-hint">⚠️ Минимум 20 символов. РОП читает каждый комментарий.</div>
+    <div class="modal-warn">Фиктивный отчёт = −50 pts штраф</div>
+    <div class="modal-btns">
+      <button class="modal-ok" onclick="submitProof()">ОТПРАВИТЬ НА ПРОВЕРКУ</button>
+      <button class="modal-cancel" onclick="closeProof()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEGA MODAL -->
+<div class="modal-bg" id="megaModal">
+  <div class="modal-box">
+    <div class="modal-title">💰 МЕГАБОНУС — РЕАЛЬНАЯ ОПЛАТА!</div>
+    <div class="modal-client" id="megaClient"></div>
+    <div style="font-size:.76rem;color:var(--text3);margin-bottom:8px">Сумма оплаты (руб):</div>
+    <input class="mega-amount-input" type="number" id="megaAmount" placeholder="Например: 35000" min="1000">
+    <div class="mega-pts-row">
+      <button class="mega-pts-btn" onclick="setMegaAmt(10000)">до 10к</button>
+      <button class="mega-pts-btn" onclick="setMegaAmt(30000)">10–30к</button>
+      <button class="mega-pts-btn" onclick="setMegaAmt(60000)">30–60к</button>
+      <button class="mega-pts-btn" onclick="setMegaAmt(120000)">60к+</button>
+    </div>
+    <div class="mega-preview" id="megaPtsPreview">Введи сумму для расчёта бонуса</div>
+    <div class="modal-btns">
+      <button class="modal-ok" onclick="confirmMega()">🎉 ПОЛУЧИТЬ МЕГАБОНУС</button>
+      <button class="modal-cancel" onclick="closeMega()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PLAYER MODAL -->
+<div class="modal-bg" id="addModal">
+  <div class="modal-box">
+    <div class="modal-title">➕ НОВЫЙ ИГРОК</div>
+    <div class="epick2" id="ePick2">
+      <div class="ep2 sel" data-e="👤">👤</div><div class="ep2" data-e="👨">👨</div>
+      <div class="ep2" data-e="👩">👩</div><div class="ep2" data-e="🧑">🧑</div>
+      <div class="ep2" data-e="🦸">🦸</div><div class="ep2" data-e="🧙">🧙</div>
+    </div>
+    <div class="cpick2" id="cPick2">
+      <div class="cp2 sel" style="background:#22D3EE" data-c="#22D3EE"></div>
+      <div class="cp2" style="background:#F87171" data-c="#F87171"></div>
+      <div class="cp2" style="background:#F5C842" data-c="#F5C842"></div>
+      <div class="cp2" style="background:#34D399" data-c="#34D399"></div>
+      <div class="cp2" style="background:#A78BFA" data-c="#A78BFA"></div>
+      <div class="cp2" style="background:#FB923C" data-c="#FB923C"></div>
+    </div>
+    <input class="modal-input" type="text" id="newName" placeholder="Имя менеджера" maxlength="22">
+    <div style="font-size:.7rem;color:var(--text3);margin-bottom:12px">PIN-код будет показан при создании</div>
+    <div class="modal-btns">
+      <button class="modal-ok" onclick="confirmAdd()" style="background:linear-gradient(135deg,var(--accent2),var(--accent))">ДОБАВИТЬ В ИГРУ</button>
+      <button class="modal-cancel" onclick="closeModal()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMBO & MOTIV -->
+<div class="combo-banner" id="comboBanner">
+  <div class="combo-t" id="comboT">КОМБО!</div>
+  <div class="combo-s" id="comboS">×2 ОЧКИ!</div>
+</div>
+<div class="motiv-popup" id="motivPopup">
+  <div class="motiv-emoji" id="motivEmoji">🔥</div>
+  <div class="motiv-text" id="motivText">ОТЛИЧНО!</div>
+  <div class="motiv-sub" id="motivSub">Продолжай!</div>
+</div>
+<div class="toasts" id="toastWrap"></div>
+
+<!-- ════════════════ MAIN APP ════════════════ -->
+<div id="mainWrap">
+<div class="app">
+
+  <!-- ── TOPBAR ── -->
+  <header class="topbar">
+    <div class="tb-logo">⚔️ CRM ARENA</div>
+    <div class="tb-season">Сезон 1 · 2 июня — 28 августа 2026</div>
+    <div class="tb-timer" id="sTimer">--д --ч</div>
+    <div class="tb-status open" id="wsStatus">
+      <div class="tb-dot"></div>
+      <span id="wsText">24/7 — работай в любое время</span>
+    </div>
+    <div class="tb-clock" id="tbClock"></div>
+    <div class="tb-spacer"></div>
+    <button class="tb-btn rop" onclick="toggleRop()">👑 РОП</button>
+    <button class="tb-btn hist" id="histBtn" onclick="openFullHist()">📋 История</button>
+    <button class="tb-btn" onclick="openAdd()">+ Игрок</button>
+    <button class="tb-btn" onclick="openImport('clients')" style="border-color:rgba(52,211,153,.3);color:var(--accent3)">📥 База клиентов</button>
+    <button class="tb-btn" onclick="openImport('competitors')" style="border-color:rgba(251,146,60,.3);color:var(--orange)">🎯 База конкурентов</button>
+    <button class="tb-btn" id="logoutBtn2" onclick="doLogout()" style="display:none">Выйти</button>
+  </header>
+
+  <!-- ── LEFT SIDEBAR ── -->
+  <aside class="sidebar">
+
+    <!-- SCORE WIDGET -->
+    <div class="score-widget">
+      <div class="sw-name" id="swName">Мои очки</div>
+      <div class="sw-score" id="myScore">0</div>
+      <div class="sw-rank" id="myRank">Ранг: Новичок 🥉</div>
+      <div class="sw-prog"><div class="sw-prog-fill" id="swProgFill" style="width:0%"></div></div>
+      <div class="sw-prog-lbl" id="swProgLbl">До след. ранга: 500 pts</div>
+      <div class="sw-stats">
+        <div class="sw-stat"><div class="sw-stat-n" id="strN">0</div><div class="sw-stat-l">серия</div></div>
+        <div class="sw-stat">
+          <div class="sw-stat-n" id="todN">0</div><div class="sw-stat-l">сегодня</div>
+          <button class="vacation-btn2" id="vacBtn" onclick="toggleVacation()" title="Защита серии 5 дней">🏖️</button>
+        </div>
+        <div class="sw-stat"><div class="sw-stat-n" id="totN">0</div><div class="sw-stat-l">всего</div></div>
+      </div>
+    </div>
+
+    <!-- PRIZE PROGRESS -->
+    <div class="prize-prog-widget" id="prizeProgWidget"></div>
+
+    <!-- DAILY BONUS (sidebar) -->
+    <div class="daily-bar" style="border-radius:var(--r2);border:1px solid rgba(245,200,66,.12);padding:12px">
+      <div style="font-size:1.4rem">🎁</div>
+      <div style="flex:1">
+        <div style="font-size:.78rem;font-weight:700;color:var(--gold)">Ежедневный бонус</div>
+        <div style="font-size:.66rem;color:var(--text3)">Серия ×до 7. Пропустишь — обнуляется!</div>
+      </div>
+      <button class="daily-btn2" id="dailyBtn" onclick="claimDaily()">+50 ⚡</button>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="side-box">
+      <div class="side-box-hdr">🎖️ Достижения</div>
+      <div class="side-box-body"><div class="ach-grid2" id="achGrid"></div></div>
+    </div>
+
+    <!-- HISTORY MINI -->
+    <div class="side-box">
+      <div class="side-box-hdr">📋 Последние действия</div>
+      <div class="side-box-body" id="histList"><div class="empty-state">История пуста</div></div>
+    </div>
+
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-col">
+
+    <!-- SPRINT -->
+    <div class="sprint-bar" id="sprintBar">
+      <span>🚀</span>
+      <div><b>ПЯТНИЧНЫЙ СПРИНТ!</b> — сегодня ×2 очки за каждую выполненную задачу</div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="main-hdr">
+      <div class="main-hdr-left">
+        <div class="main-title">⚡ Задачи дня <span id="mgrTagLabel" style="font-size:.72rem;font-weight:400;color:var(--text3)"></span></div>
+        <div class="task-count" id="taskCount">загрузка...</div>
+        <div class="fire-badge2" id="fireBadge2" style="display:none"></div>
+      </div>
+      <div class="season-bar">
+        <span class="sbar-lbl" id="dayLabel"></span>
+        <div class="sbar-prog"><div class="sbar-fill" id="sbarFill" style="width:0%"></div></div>
+        <span class="sbar-pct" id="sbarPct"></span>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <button class="f-chip active" onclick="filterTasks('all',this)">Все</button>
+      <button class="f-chip" onclick="filterTasks('urgent',this)">🔥 Срочно</button>
+      <button class="f-chip" onclick="filterTasks('hot',this)">📞 Позвонить</button>
+      <button class="f-chip" onclick="filterTasks('warm',this)">💌 Напомнить</button>
+      <button class="f-chip" onclick="filterTasks('cool',this)">🔁 Реактивация</button>
+      <button class="f-chip f-comp" onclick="filterTasks('comp',this)">🎯 Конкуренты</button>
+      <button class="f-chip f-ref" onclick="filterTasks('ref',this)">♻️ Отказники</button>
+    </div>
+
+    <!-- TASK LIST -->
+    <div class="task-list" id="tasksList"></div>
+
+  </main>
+
+  <!-- ── RIGHT SIDEBAR ── -->
+  <aside class="right-col">
+
+    <!-- LEADERBOARD -->
+    <div class="rc-section">
+      <div class="rc-title">🏆 Таблица лидеров</div>
+      <div id="lboard"></div>
+    </div>
+
+    <!-- FEED -->
+    <div class="rc-section">
+      <div class="rc-title">🎬 Лента событий</div>
+      <div id="feedList"><div class="empty-state">Пока тихо...</div></div>
+    </div>
+
+    <!-- MONEY -->
+    <div class="rc-section" id="moneySection">
+      <div class="rc-title">💰 Выручка в работе</div>
+      <div style="font-family:Orbitron,sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent3)" id="moneyVal">0 руб</div>
+      <div style="font-size:.66rem;color:var(--text3);margin-top:4px">от подтверждённых задач</div>
+    </div>
+
+    <!-- TEAM CHALLENGE -->
+    <div class="rc-section">
+      <div class="rc-title">👥 Командный вызов
+        <button class="rc-btn" id="teamSetBtn" onclick="setTeamGoal()" style="display:none">⚙️</button>
+      </div>
+      <div id="teamContent"><div class="empty-state">РОП не поставил цель</div></div>
+    </div>
+
+    <!-- DUEL -->
+    <div class="rc-section">
+      <div class="rc-title">⚔️ Дуэль 1 на 1</div>
+      <div id="duelContent">
+        <div class="empty-state">Нет активных дуэлей</div>
+        <button class="rc-action-btn" onclick="openDuel()">⚔️ Вызвать коллегу</button>
+      </div>
+    </div>
+
+    <!-- BOSS -->
+    <div class="rc-section">
+      <div class="rc-title">🏰 Сезонный Босс
+        <button class="rc-btn" id="bossSetBtn" onclick="setBoss()" style="display:none">⚙️ РОП</button>
+      </div>
+      <div id="bossContent"><div class="empty-state">Ждите назначения босса...</div></div>
+    </div>
+
+    <!-- MAP -->
+    <div class="rc-section">
+      <div class="rc-title">🗺️ Карта территорий</div>
+      <div class="map-grid2" id="mapGrid"></div>
+    </div>
+
+    <!-- ROULETTE -->
+    <div class="rc-section" style="text-align:center">
+      <div class="rc-title" style="justify-content:center">🎰 Ежедневная рулетка</div>
+      <span class="roulette-icon" id="rouletteWheel">🎰</span>
+      <div class="roulette-result" id="rouletteResult">Крути — выиграй бонус!</div>
+      <button class="rc-action-btn primary" id="rouletteBtn" onclick="spinRoulette()">🎰 Крутить!</button>
+    </div>
+
+    <!-- POWER CARDS -->
+    <div class="rc-section">
+      <div class="rc-title">🃏 Карты усилений <span style="font-size:.62rem;color:var(--text3)" id="cardsNext"></span></div>
+      <div id="cardsList"><div class="empty-state">Выполни 10 задач → получишь карту!</div></div>
+      <div class="cards-progress2">
+        <div class="cp-bar2"><div class="cp-fill2" id="cpFill2" style="width:0%"></div></div>
+        <span class="cp-txt2" id="cpTxt2">0/10</span>
+      </div>
+    </div>
+
+    <!-- COMP CHART -->
+    <div class="rc-section">
+      <div class="rc-title">🎯 Переманено от конкурентов</div>
+      <div id="compList"><div class="empty-state">Пока никто не переманил</div></div>
+    </div>
+
+    <!-- PRIZES -->
+    <div class="rc-section">
+      <div class="rc-title">🎁 Призы сезона</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;padding:9px;background:var(--panel);border-radius:var(--r);border:1px solid var(--border)">
+          <span style="font-size:1.2rem">👑</span>
+          <div><div style="font-family:Orbitron,sans-serif;font-size:.75rem;color:var(--gold);font-weight:700">10 000 pts</div><div style="font-size:.7rem;font-weight:600">Чемпион сезона</div><div style="font-size:.64rem;color:var(--text3)">15 000 руб. премия</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px;background:var(--panel);border-radius:var(--r);border:1px solid var(--border)">
+          <span style="font-size:1.2rem">🥈</span>
+          <div><div style="font-family:Orbitron,sans-serif;font-size:.75rem;color:#B0B8C8;font-weight:700">6 000 pts</div><div style="font-size:.7rem;font-weight:600">Серебро</div><div style="font-size:.64rem;color:var(--text3)">Выходной + подарок</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px;background:var(--panel);border-radius:var(--r);border:1px solid var(--border)">
+          <span style="font-size:1.2rem">🥉</span>
+          <div><div style="font-family:Orbitron,sans-serif;font-size:.75rem;color:#CD7F32;font-weight:700">3 000 pts</div><div style="font-size:.7rem;font-weight:600">Бронза</div><div style="font-size:.64rem;color:var(--text3)">Ozon 3 000 руб.</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px;background:var(--panel);border-radius:var(--r);border:1px solid var(--border)">
+          <span style="font-size:1.2rem">⚡</span>
+          <div><div style="font-family:Orbitron,sans-serif;font-size:.75rem;color:var(--accent);font-weight:700">21 день подряд</div><div style="font-size:.7rem;font-weight:600">Стальная серия</div><div style="font-size:.64rem;color:var(--text3)">+2 000 бонусных pts!</div></div>
+        </div>
+      </div>
+      <div style="font-size:.64rem;color:var(--text3);text-align:center;margin-top:10px">Каждая задача проверяется РОПом · Обман = −50 pts</div>
+    </div>
+
+    <!-- VERIFY PANEL (ROP) -->
+    <div class="rc-section" id="verifyPanel" style="display:none">
+      <div class="rc-title" style="color:var(--gold)">⏳ На проверке</div>
+      <div id="verifyList"><div class="empty-state">Нет задач</div></div>
+    </div>
+
+  </aside>
+</div><!-- .app -->
+</div><!-- #mainWrap -->
+
+<script>
+
+// ============================================================
+// ДАННЫЕ
+// ============================================================
+const WORKING_DAYS=["2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-19","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-03","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28"];
+
+const BASE_MGRS=[
+  {id:'roman',    name:'Роман Д.',    emoji:'🧑',color:'#ffd200'},
+  {id:'ekaterina',name:'Екатерина Ч.',emoji:'👩',color:'#00f5ff'},
+  {id:'liza',     name:'Лиза',       emoji:'👧',color:'#ff6b9d'},
+  {id:'yana',     name:'Яна К.',     emoji:'👩',color:'#b388ff'},
+  {id:'svetlana', name:'Светлана Г.',emoji:'👩',color:'#00ff88'},
+  {id:'victoria', name:'Виктория Р.',emoji:'👑',color:'#ff8c00'},
+];
+
+// Клиенты: own=закреплённые, competitor=конкуренты🎯, refusal=отказники🔁, rand=рандом
+const CLIENTS=[
+  // РОМАН
+  {id:"r01",name:"ООО «АБОВЯН ТЕХ»",inn:"7704424440",sum:450000,cnt:1,abc:"C",src:"own",mgr:"roman",mo:5,tag:"💼"},
+  {id:"r02",name:"ООО ВКУСНОКУБ",inn:"5006078456",sum:296500,cnt:19,abc:"A",src:"own",mgr:"roman",mo:1,tag:"💼"},
+  {id:"r03",name:"АО ТехПромАтом",inn:"7714345678",sum:280000,cnt:2,abc:"A",src:"own",mgr:"roman",mo:1,tag:"💼"},
+  {id:"r04",name:"ООО ЗМТ-ГРУПП",inn:"7728885760",sum:241000,cnt:1,abc:"C",src:"own",mgr:"roman",mo:3,tag:"💼"},
+  {id:"r05",name:"ИП Мингазова Л.Н.",inn:"027316473901",sum:195000,cnt:2,abc:"C",src:"own",mgr:"roman",mo:2,tag:"💼"},
+  // ЕКАТЕРИНА
+  {id:"e01",name:"ООО ЦентроСерт",inn:"7714123456",sum:577500,cnt:61,abc:"A",src:"own",mgr:"ekaterina",mo:16,tag:"💼"},
+  {id:"e02",name:"ООО МАБАР",inn:"9701234567",sum:524500,cnt:16,abc:"A",src:"own",mgr:"ekaterina",mo:6,tag:"💼"},
+  {id:"e03",name:"ООО Эльтрис",inn:"7810234567",sum:510000,cnt:57,abc:"A",src:"own",mgr:"ekaterina",mo:13,tag:"💼"},
+  {id:"e04",name:"ООО ЛА БОТТЕГА РУ",inn:"7714987654",sum:210500,cnt:12,abc:"C",src:"own",mgr:"ekaterina",mo:3,tag:"💼"},
+  {id:"e05",name:"ООО ВодаСтокСервис",inn:"7714001122",sum:156400,cnt:6,abc:"A",src:"own",mgr:"ekaterina",mo:4,tag:"💼"},
+  {id:"e06",name:"ИП ТИМОФЕЕВА КРИСТИНА",inn:"771409876501",sum:332000,cnt:4,abc:"C",src:"own",mgr:"ekaterina",mo:2,tag:"💼"},
+  {id:"e07",name:"ООО СЕРТИФИКАЦИЯ ПРОДУКЦИИ",inn:"6027145117",sum:275000,cnt:2,abc:"C",src:"own",mgr:"ekaterina",mo:2,tag:"💼"},
+  // ЯНА
+  {id:"y01",name:"АО Златоустовский машиностроительный",inn:"7453012345",sum:424000,cnt:2,abc:"C",src:"own",mgr:"yana",mo:1,tag:"💼"},
+  {id:"y02",name:"ИП Стариков Владимир Ф.",inn:"772309876501",sum:296500,cnt:5,abc:"A",src:"own",mgr:"yana",mo:1,tag:"💼"},
+  {id:"y03",name:"ИП Смирнов Сергей В.",inn:"773409876501",sum:220866,cnt:11,abc:"A",src:"own",mgr:"yana",mo:1,tag:"💼"},
+  {id:"y04",name:"ИП Лугинова Анна Л.",inn:"774509876501",sum:190000,cnt:3,abc:"A",src:"own",mgr:"yana",mo:2,tag:"💼"},
+  {id:"y05",name:"ООО СРП Групп",inn:"7714654321",sum:185000,cnt:11,abc:"A",src:"own",mgr:"yana",mo:5,tag:"💼"},
+  // СВЕТЛАНА
+  {id:"s01",name:"ООО Центр Стандартизации",inn:"6027196143",sum:2577300,cnt:98,abc:"A",src:"own",mgr:"svetlana",mo:7,tag:"💼"},
+  {id:"s02",name:"ИП Щербинин Олег В.",inn:"390706193751",sum:2011900,cnt:326,abc:"A",src:"own",mgr:"svetlana",mo:0,tag:"💼"},
+  {id:"s03",name:"ГОССТАНДАРТ",inn:"7704567890",sum:963000,cnt:34,abc:"A",src:"own",mgr:"svetlana",mo:1,tag:"💼"},
+  {id:"s04",name:"ООО ПРОЕКТНЫЙ ЦЕНТР ТЕРРА",inn:"7704111222",sum:837750,cnt:44,abc:"A",src:"own",mgr:"svetlana",mo:0,tag:"💼"},
+  {id:"s05",name:"ООО ЦЕНТР СЕРТИФИКАЦИИ СИСТЕМА",inn:"7806215068",sum:679300,cnt:59,abc:"A",src:"own",mgr:"svetlana",mo:5,tag:"💼"},
+  {id:"s06",name:"ООО ИНФЕРНОСЕРТ",inn:"7714333444",sum:657050,cnt:65,abc:"A",src:"own",mgr:"svetlana",mo:0,tag:"💼"},
+  {id:"s07",name:"ИП Кузьмин Сергей (посредник)",inn:"771409876502",sum:267200,cnt:110,abc:"A",src:"own",mgr:"svetlana",mo:0,tag:"💼"},
+  {id:"s08",name:"ООО РСТ ЮГ",inn:"2312345678",sum:297250,cnt:87,abc:"A",src:"own",mgr:"svetlana",mo:1,tag:"💼"},
+  {id:"s09",name:"РАМЕНСКИЙ ФИЛИАЛ АО ЭЛОКС-ПРОМ",inn:"5005012345",sum:1095000,cnt:30,abc:"A",src:"own",mgr:"svetlana",mo:6,tag:"💼"},
+  {id:"s10",name:"ГОАУ АРНО",inn:"3900234567",sum:626999,cnt:6,abc:"A",src:"own",mgr:"svetlana",mo:0,tag:"💼"},
+  {id:"s11",name:"ООО Техносфера (АМО)",inn:"7714222333",sum:438500,cnt:26,abc:"A",src:"own",mgr:"svetlana",mo:1,tag:"💼"},
+  {id:"s12",name:"ООО ЛИНИЯ КРАСОК",inn:"7714444555",sum:411000,cnt:14,abc:"A",src:"own",mgr:"svetlana",mo:1,tag:"💼"},
+  // ВИКТОРИЯ
+  {id:"v01",name:"ООО Национальная лаборатория",inn:"7810987654",sum:7805750,cnt:535,abc:"A",src:"own",mgr:"victoria",mo:22,tag:"💼"},
+  {id:"v02",name:"ООО МФЦС",inn:"7714876543",sum:4268450,cnt:211,abc:"A",src:"own",mgr:"victoria",mo:17,tag:"💼"},
+  {id:"v03",name:"ООО ГЕРМОИЗОЛ",inn:"7810765432",sum:3070250,cnt:88,abc:"A",src:"own",mgr:"victoria",mo:17,tag:"💼"},
+  {id:"v04",name:"ООО КОМПЛЕКСНАЯ БЕЗОПАСНОСТЬ",inn:"7714654321",sum:1690300,cnt:106,abc:"A",src:"own",mgr:"victoria",mo:18,tag:"💼"},
+  {id:"v05",name:"ЦК Гарант = МВ Тест",inn:"7714543210",sum:1495300,cnt:110,abc:"A",src:"own",mgr:"victoria",mo:33,tag:"💼"},
+  {id:"v06",name:"ООО Авангард",inn:"7810432109",sum:1402500,cnt:8,abc:"A",src:"own",mgr:"victoria",mo:22,tag:"💼"},
+  {id:"v07",name:"ООО ГостСтандарт",inn:"7714321098",sum:1365000,cnt:67,abc:"A",src:"own",mgr:"victoria",mo:19,tag:"💼"},
+  {id:"v08",name:"ООО ЕДИНЫЙ СТАНДАРТ КАЧЕСТВА",inn:"7714210987",sum:624400,cnt:112,abc:"A",src:"own",mgr:"victoria",mo:27,tag:"💼"},
+  // ЛИЗА (исторические незакреплённые)
+  {id:"l01",name:"ООО Гортест",inn:"7810109876",sum:2334730,cnt:166,abc:"A",src:"own",mgr:"liza",mo:43,tag:"💼"},
+  {id:"l02",name:"ООО Группа Айтекс",inn:"7714098765",sum:1601500,cnt:57,abc:"A",src:"own",mgr:"liza",mo:18,tag:"💼"},
+  {id:"l03",name:"ООО Компания Луис+",inn:"7714987652",sum:1648000,cnt:5,abc:"A",src:"own",mgr:"liza",mo:62,tag:"💼"},
+  {id:"l04",name:"ООО НЕВА-ТЕСТ",inn:"7810098765",sum:1208400,cnt:53,abc:"A",src:"own",mgr:"liza",mo:17,tag:"💼"},
+  {id:"l05",name:"ООО Столица Стандартов",inn:"7714876541",sum:807150,cnt:106,abc:"A",src:"own",mgr:"liza",mo:17,tag:"💼"},
+  {id:"l06",name:"ООО СертГруппТест",inn:"7714765430",sum:775700,cnt:198,abc:"A",src:"own",mgr:"liza",mo:77,tag:"💼"},
+  {id:"l07",name:"ООО Сертифика-ДВ",inn:"7810654321",sum:578500,cnt:148,abc:"A",src:"own",mgr:"liza",mo:23,tag:"💼"},
+  {id:"l08",name:"ООО Пионер Про",inn:"7714432100",sum:352100,cnt:100,abc:"A",src:"own",mgr:"liza",mo:25,tag:"💼"},
+  {id:"l09",name:"ООО ДельтаСтандарт",inn:"7714321099",sum:238000,cnt:48,abc:"A",src:"own",mgr:"liza",mo:18,tag:"💼"},
+  {id:"l10",name:"ООО Техносфера (Битрикс)",inn:"7714543211",sum:1981250,cnt:114,abc:"A",src:"own",mgr:"liza",mo:17,tag:"💼"},
+  // КОНКУРЕНТЫ 🎯 — рандомное распределение
+  {id:"cc01",name:"ООО ЦС «Центр Стандартизации» (конк.)",inn:"6027189146",sum:8206200,cnt:629,abc:"A",src:"competitor",mgr:"rand",mo:5,tag:"🎯"},
+  {id:"cc02",name:"ООО ЦС «Система» (конк.)",inn:"7806215068",sum:5455150,cnt:59,abc:"A",src:"competitor",mgr:"rand",mo:6,tag:"🎯"},
+  {id:"cc03",name:"ООО РСЦ Москва (конк.)",inn:"7728885760",sum:3190050,cnt:106,abc:"A",src:"competitor",mgr:"rand",mo:4,tag:"🎯"},
+  {id:"cc04",name:"ООО ТехПромСерт СПб (конк.)",inn:"7816273083",sum:2910250,cnt:61,abc:"A",src:"competitor",mgr:"rand",mo:7,tag:"🎯"},
+  {id:"cc05",name:"ООО МЦ МЕГИ (конк.)",inn:"278069100",sum:1740680,cnt:30,abc:"A",src:"competitor",mgr:"rand",mo:5,tag:"🎯"},
+  {id:"cc06",name:"ООО ПромТехСерт НСК (конк.)",inn:"5406988334",sum:1443200,cnt:193,abc:"A",src:"competitor",mgr:"rand",mo:6,tag:"🎯"},
+  {id:"cc07",name:"ООО СертГруппТест (конк.)",inn:"7720408332",sum:1146900,cnt:28,abc:"B",src:"competitor",mgr:"rand",mo:8,tag:"🎯"},
+  {id:"cc08",name:"ООО Сертификация Плюс Екб (конк.)",inn:"6686075294",sum:1140740,cnt:118,abc:"B",src:"competitor",mgr:"rand",mo:7,tag:"🎯"},
+  {id:"cc09",name:"ООО ПроммашЭксперт Сар. (конк.)",inn:"6452126948",sum:1078000,cnt:128,abc:"B",src:"competitor",mgr:"rand",mo:9,tag:"🎯"},
+  {id:"cc10",name:"ООО СЗС Сертификация СПб (конк.)",inn:"7813232763",sum:814000,cnt:21,abc:"B",src:"competitor",mgr:"rand",mo:6,tag:"🎯"},
+  {id:"cc11",name:"ООО Северо-Западная Серт. (конк.)",inn:"7805644530",sum:813600,cnt:290,abc:"B",src:"competitor",mgr:"rand",mo:8,tag:"🎯"},
+  {id:"cc12",name:"ООО НФЦ Краснодар (конк.)",inn:"2311244853",sum:704200,cnt:167,abc:"B",src:"competitor",mgr:"rand",mo:10,tag:"🎯"},
+  {id:"cc13",name:"ООО Интертест СПб (конк.)",inn:"7813233910",sum:646950,cnt:209,abc:"B",src:"competitor",mgr:"rand",mo:9,tag:"🎯"},
+  {id:"cc14",name:"ООО ПрофСтандарт СПб (конк.)",inn:"7813241830",sum:1909450,cnt:26,abc:"A",src:"competitor",mgr:"rand",mo:5,tag:"🎯"},
+  {id:"cc15",name:"ООО МЦС АТЛАС Москва (конк.)",inn:"7704424440",sum:375975,cnt:223,abc:"A",src:"competitor",mgr:"rand",mo:4,tag:"🎯"},
+  {id:"cc16",name:"ООО ТР ТС СПб (конк.)",inn:"7813295032",sum:575500,cnt:266,abc:"A",src:"competitor",mgr:"rand",mo:7,tag:"🎯"},
+  {id:"cc17",name:"ООО Меридиан Екб (конк.)",inn:"6686135176",sum:680000,cnt:108,abc:"B",src:"competitor",mgr:"rand",mo:8,tag:"🎯"},
+  {id:"cc18",name:"ООО Инфовектор Пермь (конк.)",inn:"5908079068",sum:650050,cnt:100,abc:"B",src:"competitor",mgr:"rand",mo:9,tag:"🎯"},
+  {id:"cc19",name:"ООО Стандарт Качества Бар. (конк.)",inn:"2224190591",sum:420000,cnt:98,abc:"B",src:"competitor",mgr:"rand",mo:10,tag:"🎯"},
+  {id:"cc20",name:"ООО РостЭксперт (конк.)",inn:"3906961898",sum:631050,cnt:18,abc:"B",src:"competitor",mgr:"rand",mo:6,tag:"🎯"},
+  // ОТКАЗНИКИ 🔁 — рандомное распределение
+  {id:"rf01",name:"ГЕРМОИЗОЛ (отказ — Позже)",inn:"",sum:987000,cnt:31,abc:"A",src:"refusal",mgr:"rand",mo:1,tag:"🔁"},
+  {id:"rf02",name:"ТАГГЕРТ (отказ — Позже)",inn:"",sum:395000,cnt:12,abc:"B",src:"refusal",mgr:"rand",mo:0,tag:"🔁"},
+  {id:"rf03",name:"АВС Фарбен (отказ — Конкуренты)",inn:"",sum:515000,cnt:8,abc:"A",src:"refusal",mgr:"rand",mo:1,tag:"🔁"},
+  {id:"rf04",name:"ЭЛОКС-ПРОМ (отказ — Игнор счёта)",inn:"",sum:259000,cnt:9,abc:"A",src:"refusal",mgr:"rand",mo:2,tag:"🔁"},
+  {id:"rf05",name:"БИО-комплекс (отказ — Позже)",inn:"",sum:113200,cnt:15,abc:"B",src:"refusal",mgr:"rand",mo:0,tag:"🔁"},
+  {id:"rf06",name:"КК ДОМИНАНТ (отказ — Дорого)",inn:"",sum:239000,cnt:11,abc:"B",src:"refusal",mgr:"rand",mo:5,tag:"🔁"},
+  {id:"rf07",name:"ВКУСНОКУБ (отказ — Дорого)",inn:"",sum:133000,cnt:10,abc:"B",src:"refusal",mgr:"rand",mo:3,tag:"🔁"},
+  {id:"rf08",name:"АЛЬФА ПОЖАРНАЯ (отказ — Дорого)",inn:"",sum:259000,cnt:10,abc:"B",src:"refusal",mgr:"rand",mo:2,tag:"🔁"},
+  {id:"rf09",name:"ТРАСТ-ТЕСТ (отказ — Игнор КП)",inn:"",sum:118100,cnt:12,abc:"B",src:"refusal",mgr:"rand",mo:1,tag:"🔁"},
+  {id:"rf10",name:"ЛЕДСПАРКЛИНГ (отказ — Позже)",inn:"",sum:145000,cnt:13,abc:"B",src:"refusal",mgr:"rand",mo:5,tag:"🔁"},
+  {id:"rf11",name:"ГОССТАНДАРТ (отказ — Дорого)",inn:"",sum:357000,cnt:13,abc:"A",src:"refusal",mgr:"rand",mo:1,tag:"🔁"},
+  {id:"rf12",name:"ИП Щербинин (отказ — Игнор)",inn:"",sum:608500,cnt:20,abc:"A",src:"refusal",mgr:"rand",mo:0,tag:"🔁"},
+  {id:"rf13",name:"ТЕХНОСФЕРА (отказ — Позже)",inn:"",sum:438500,cnt:13,abc:"A",src:"refusal",mgr:"rand",mo:1,tag:"🔁"},
+  {id:"rf14",name:"НАНО СЕРТ (отказ — Игнор)",inn:"",sum:47100,cnt:15,abc:"C",src:"refusal",mgr:"rand",mo:6,tag:"🔁"},
+  {id:"rf15",name:"ПРОЕКТНЫЙ ЦЕНТР ТЕРРА (отказ)",inn:"",sum:321500,cnt:18,abc:"A",src:"refusal",mgr:"rand",mo:0,tag:"🔁"},
+];
+
+const TASK_TYPES=[
+  {type:"urgent",action:"Срочный звонок",emoji:"🔥",basePts:150,minMo:0,maxMo:2,btn:"call",btnT:"ПОЗВОНИТЬ СЕЙЧАС"},
+  {type:"hot",action:"Позвонить / предложить",emoji:"📞",basePts:80,minMo:0,maxMo:8,btn:"call",btnT:"СДЕЛАТЬ ЗВОНОК"},
+  {type:"hot",action:"Допродажа",emoji:"💼",basePts:100,minMo:0,maxMo:6,btn:"offer",btnT:"СДЕЛАТЬ ОФФЕР"},
+  {type:"warm",action:"Напомнить о себе",emoji:"💌",basePts:60,minMo:2,maxMo:18,btn:"remind",btnT:"НАПИСАТЬ/ПОЗВОНИТЬ"},
+  {type:"cool",action:"Реактивация клиента",emoji:"🔁",basePts:120,minMo:6,maxMo:999,btn:"revive",btnT:"РЕАКТИВИРОВАТЬ"},
+  {type:"cool",action:"Переманить от конкурента",emoji:"🎯",basePts:200,minMo:0,maxMo:999,btn:"revive",btnT:"ПЕРЕМАНИТЬ"},
+  {type:"warm",action:"Выяснить причину отказа",emoji:"🤔",basePts:80,minMo:0,maxMo:6,btn:"call",btnT:"ПОЗВОНИТЬ"},
+];
+
+const ACHIEVEMENTS=[
+  {id:"f1",e:"📞",n:"Первый звонок",th:1,t:"total"},
+  {id:"t10",e:"🔟",n:"10 задач",th:10,t:"total"},
+  {id:"t50",e:"💯",n:"50 задач",th:50,t:"total"},
+  {id:"t100",e:"🎯",n:"100 задач",th:100,t:"total"},
+  {id:"s3",e:"🔥",n:"3 дня",th:3,t:"streak"},
+  {id:"s7",e:"⚡",n:"Неделя!",th:7,t:"streak"},
+  {id:"s14",e:"🌟",n:"2 недели",th:14,t:"streak"},
+  {id:"s21",e:"💎",n:"21 день!",th:21,t:"streak"},
+  {id:"s42",e:"👑",n:"42 дня!",th:42,t:"streak"},
+  {id:"p500",e:"🥉",n:"500 pts",th:500,t:"score"},
+  {id:"p3k",e:"🥈",n:"3000 pts",th:3000,t:"score"},
+  {id:"p6k",e:"🥇",n:"6000 pts",th:6000,t:"score"},
+  {id:"p10k",e:"👑",n:"ЧЕМПИОН",th:10000,t:"score"},
+  {id:"c1",e:"🎯",n:"1-й конкурент",th:1,t:"competitor"},
+  {id:"c5",e:"⚔️",n:"5 конкурентов",th:5,t:"competitor"},
+  {id:"rv1",e:"🔁",n:"1-й отказник",th:1,t:"refusal"},
+  {id:"rv5",e:"♻️",n:"5 отказников",th:5,t:"refusal"},
+  {id:"vr1",e:"✅",n:"1-е подтв.",th:1,t:"verified"},
+  {id:"vr10",e:"🛡️",n:"10 подтв.",th:10,t:"verified"},
+  {id:"d10",e:"🚀",n:"10 задач/день",th:10,t:"daily"},
+];
+
+const RANKS=[{n:"Новичок 🥉",m:0,c:"#CD7F32"},{n:"Продавец ⚡",m:500,c:"#00c6ff"},{n:"Охотник 🎯",m:1500,c:"#7B2FFF"},{n:"Чемпион 🥈",m:3000,c:"#C0C0C0"},{n:"Легенда 🥇",m:6000,c:"#FFD700"},{n:"Мастер 💎",m:10000,c:"#00ff88"}];
+
+// ============================================================
+// СОСТОЯНИЕ
+// ============================================================
+let S={cur:null,mgrs:{},tasks:[],filter:"all",daily:false,comboC:0,lastCombo:null,pendingTask:null,isRop:false,pendingVerify:[],addE:"👤",addC:"#00f5ff",globalHistory:[],teamGoal:null,duel:null,boss:null};
+
+function load(){
+  try{const sv=JSON.parse(localStorage.getItem("crmV5")||"{}");
+    S.mgrs=sv.mgrs||{};S.daily=sv.daily===todayStr();
+    S.pendingVerify=sv.pendingVerify||[];
+    S.globalHistory=sv.globalHistory||[];
+    S.teamGoal=sv.teamGoal||null;
+    S.duel=sv.duel||null;
+    S.boss=sv.boss||null;
+  }catch(e){}
+  BASE_MGRS.forEach(m=>{if(!S.mgrs[m.id])S.mgrs[m.id]={score:0,streak:0,tod:0,tot:0,ldate:"",ach:[],acl:0,comp:0,ref:0,verified:0,money:0,e:m.emoji,c:m.color,n:m.name};});
+  // Рандомно распределяем клиентов без менеджера
+  distribRand();
+  if(!S.cur)S.cur=BASE_MGRS[0].id;
+}
+
+function save(){
+  localStorage.setItem("crmV5",JSON.stringify({
+    mgrs:S.mgrs,daily:S.daily?todayStr():false,
+    pendingVerify:S.pendingVerify,
+    globalHistory:(S.globalHistory||[]).slice(0,500),
+    teamGoal:S.teamGoal||null,
+    duel:S.duel||null,
+    boss:S.boss||null,
+  }));
+}
+
+function todayStr(){const d=new Date();return d.toISOString().slice(0,10);}
+
+// Детерминированное распределение рандомных клиентов
+function distribRand(){
+  const mgrIds=Object.keys(S.mgrs).filter(id=>id!=="");
+  if(!mgrIds.length)return;
+  CLIENTS.filter(c=>c.mgr==="rand").forEach((c,i)=>{
+    c.mgr=mgrIds[seededR(c.id+todayStr().slice(0,7))*mgrIds.length|0];
+  });
+}
+
+function allM(){return Object.entries(S.mgrs).map(([id,m])=>({id,...m}));}
+function getRank(s){for(let i=RANKS.length-1;i>=0;i--)if(s>=RANKS[i].m)return RANKS[i];return RANKS[0];}
+function getNextR(s){return RANKS.find(r=>r.m>s)||null;}
+function seededR(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;h=((h^(h>>>16))*0x45d9f3b)|0;h=((h^(h>>>16))*0x45d9f3b)|0;return((h^(h>>>16))>>>0)/0xffffffff;}
+
+// ============================================================
+// ГЕНЕРАЦИЯ ЗАДАЧ (детерминировано по дню + менеджеру)
+// ============================================================
+function todayWorkDay(){
+  const t=todayStr();
+  const idx=WORKING_DAYS.indexOf(t);
+  return idx>=0?idx+1:null;
+}
+function seasonProgress(){
+  const t=todayStr();
+  const idx=WORKING_DAYS.indexOf(t);
+  if(idx<0)return{day:0,total:WORKING_DAYS.length,pct:0};
+  return{day:idx+1,total:WORKING_DAYS.length,pct:Math.round((idx+1)/WORKING_DAYS.length*100)};
+}
+
+function genTasks(mid){
+  const myClients=CLIENTS.filter(c=>c.mgr===mid);
+  const today=todayStr();
+  let sh=[...myClients];
+  for(let i=sh.length-1;i>0;i--){
+    const j=Math.floor(seededR(today+mid+i)*(i+1));
+    [sh[i],sh[j]]=[sh[j],sh[i]];
+  }
+  const take=Math.min(sh.length,20);
+  return sh.slice(0,take).map((cl,i)=>{
+    // Выбираем тип задачи
+    let tt;
+    if(cl.src==="competitor")tt=TASK_TYPES[5]; // переманить
+    else if(cl.src==="refusal")tt=TASK_TYPES[6]; // выяснить отказ
+    else{
+      let cands=TASK_TYPES.slice(0,5).filter(t=>cl.mo>=t.minMo&&cl.mo<t.maxMo);
+      if(!cands.length)cands=[TASK_TYPES[4]];
+      tt=cands[i%cands.length];
+    }
+    let pts=tt.basePts;
+    if(cl.abc==="A")pts=Math.round(pts*1.5);
+    if(cl.mo>24)pts=Math.round(pts*1.2);
+    if(cl.src==="competitor")pts+=50;
+    if(cl.src==="refusal")pts+=30;
+    return{id:`${mid}_${cl.id}_${today}`,cid:cl.id,client:cl.name,abc:cl.abc,
+      sum:cl.sum,mo:cl.mo,src:cl.src,tag:cl.tag,
+      type:tt.type,action:tt.action,emoji:tt.emoji,
+      reason:mkReason(cl,tt.type),pts,btn:tt.btn,btnT:tt.btnT,
+      status:"active"};// active|pending|done|rejected
+  }).sort((a,b)=>{const o={urgent:0,hot:1,warm:2,cool:3};return(o[a.type]||2)-(o[b.type]||2);});
+}
+
+function mkReason(cl,type){
+  if(cl.src==="competitor")return`Работает с конкурентом — ${cl.cnt} документов! Предложи лучше`;
+  if(cl.src==="refusal")return`Отказник — выяснить причину и вернуть`;
+  if(type==="cool"&&cl.mo>24)return`Пропал ${cl.mo} мес назад — срочная реактивация!`;
+  if(type==="cool")return`${cl.mo} мес без заказа — напомни о себе`;
+  if(type==="urgent")return`Горячий контакт — не упусти!`;
+  if(type==="hot")return`Активный — предложи новую услугу`;
+  return`${cl.mo} мес без связи — пора напомнить`;
+}
+
+// ============================================================
+// PROOF МЕХАНИКА (проверка действия)
+// ============================================================
+let proofTimerInterval=null;
+
+function openProof(taskId){
+  
+  const t=S.tasks.find(x=>x.id===taskId);
+  if(!t||t.status!=="active")return;
+  S.pendingTask=taskId;
+  document.getElementById("proofClient").textContent=`${t.tag} ${t.client} | ${t.emoji} ${t.action}`;
+  document.getElementById("proofText").value="";
+  document.getElementById("proofModal").classList.add("open");
+  // Таймер 30 сек (нельзя нажать и сразу закрыть)
+  let secs=30;
+  document.getElementById("timerFill").style.width="100%";
+  clearInterval(proofTimerInterval);
+  proofTimerInterval=setInterval(()=>{
+    secs--;
+    document.getElementById("timerFill").style.width=(secs/30*100)+"%";
+    if(secs<=0){clearInterval(proofTimerInterval);}
+  },1000);
+}
+
+function closeProof(){
+  clearInterval(proofTimerInterval);
+  document.getElementById("proofModal").classList.remove("open");
+  S.pendingTask=null;
+}
+
+function submitProof(){
+  const comment=document.getElementById("proofText").value.trim();
+  if(comment.length<20){
+    document.getElementById("proofText").style.borderColor="var(--red)";
+    toast("✏️ Напишите подробнее — минимум 20 символов!","warn");
+    return;
+  }
+  const t=S.tasks.find(x=>x.id===S.pendingTask);
+  if(!t)return;
+  t.status="pending";
+  t.comment=comment;
+  t.timestamp=new Date().toISOString();
+  // Добавляем в очередь верификации
+  S.pendingVerify.push({
+    tid:t.id,taskId:S.pendingTask,mgrId:S.cur,
+    mgrName:S.mgrs[S.cur]?.n||"—",
+    client:t.client,action:t.action,comment,
+    pts:t.pts,timestamp:t.timestamp
+  });
+  clearInterval(proofTimerInterval);
+  document.getElementById("proofModal").classList.remove("open");
+  S.pendingTask=null;
+  // Глобальный лог
+  globalLog({client:t.client,action:t.action,comment,pts:t.pts,status:'pending',taskId:t.id,type:'task'});
+  globalLog({client:t.client,action:t.action,comment,pts:t.pts,status:"pending",taskId:t.id,type:"task"});
+  save();rAll();
+  showMotiv();
+  toast(`⏳ Отправлено на проверку РОПу!`,"success");
+  setTimeout(()=>toast(`+${t.pts} pts после подтверждения 🎯`,"points"),400);
+}
+
+// ============================================================
+// ВЕРИФИКАЦИЯ РОПом
+// ============================================================
+function toggleRop(){
+  S.isRop=!S.isRop;
+  rVerifyPanel();
+  const btn=document.querySelector(".tb-btn.rop");
+  btn.textContent=S.isRop?"❌ Выйти из РОП":"👑 РОП-панель";
+  btn.style.background=S.isRop?"rgba(255,51,102,.15)":"rgba(255,215,0,.08)";
+}
+
+function rVerifyPanel(){
+  const panel=document.getElementById("verifyPanel");
+  const list=document.getElementById("verifyList");
+  if(!S.isRop){panel.style.display="none";return;}
+  panel.style.display="block";
+  const tsb=document.getElementById("teamSetBtn");if(tsb)tsb.style.display="block";
+  const bsb=document.getElementById("bossSetBtn");if(bsb)bsb.style.display="block";
+  if(!S.pendingVerify.length){list.innerHTML=`<div class="vp-empty">Нет задач на проверку ✅</div>`;return;}
+  list.innerHTML=S.pendingVerify.map((v,i)=>`
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);padding:10px;margin-bottom:7px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div>
+          <div style="font-size:.76rem;font-weight:600">${v.mgrName} → ${v.client.slice(0,28)}</div>
+          <div style="font-size:.66rem;color:var(--text3);margin-top:2px">💬 «${v.comment.slice(0,70)}${v.comment.length>70?"…":""}»</div>
+          <div style="font-size:.6rem;color:var(--text3);margin-top:2px">${new Date(v.timestamp).toLocaleString("ru",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <button style="flex:1;padding:6px;border-radius:var(--r);border:1px solid rgba(52,211,153,.3);background:rgba(52,211,153,.08);color:var(--accent3);font-family:Inter,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer" onclick="verifyTask(${i},true)">✅ +${v.pts} pts</button>
+        <button style="padding:6px 10px;border-radius:var(--r);border:1px solid rgba(52,211,153,.2);background:rgba(52,211,153,.05);color:var(--accent3);font-family:Inter,sans-serif;font-size:.7rem;font-weight:700;cursor:pointer" onclick="verifyTask(${i},true);openMega(v.taskId)">💰 +Оплата</button>
+        <button style="padding:6px 10px;border-radius:var(--r);border:1px solid rgba(248,113,113,.25);background:rgba(248,113,113,.08);color:var(--red);font-family:Inter,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer" onclick="verifyTask(${i},false)">❌ −50</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function verifyTask(idx,approve){
+  const v=S.pendingVerify[idx];
+  if(!v)return;
+  const m=S.mgrs[v.mgrId];
+  if(!m)return;
+  if(approve){
+    // Начисляем очки
+    let pts=v.pts;
+    const now=Date.now();
+    if(S.lastCombo&&(now-S.lastCombo)<3600000){S.comboC++;if(S.comboC>=3){pts*=2;showCombo("КОМБО!","×2 ОЧКИ!");}}
+    else{S.comboC=1;}S.lastCombo=now;
+    const today=todayStr();
+    if(m.ldate!==today){const y=new Date(Date.now()-86400000).toISOString().slice(0,10);const vacation=m.vacation&&Date.now()<m.vacation;m.streak=m.ldate===y||vacation?m.streak+1:1;m.ldate=today;m.tod=0;if(m.streak===21){m.score+=2000;toast("💎 СТАЛЬНАЯ СЕРИЯ "+m.n+"! +2000!","achievement");}if(m.streak===42){m.score+=5000;toast("👑 СТАЛЬНАЯ ВОЛЯ "+m.n+"! +5000!","achievement");}}
+    const isSprint=checkSprint();const finalPts=isSprint?pts*2:pts;
+  // Мультипликатор карты усилений
+  let cardMult=1;
+  if(m._x2next&&m._x2next>0){cardMult=2;m._x2next--;if(m._x2next===0)delete m._x2next;}
+  const realPts=Math.round(finalPts*cardMult);
+  if(cardMult>1)toast(`🃏 Карта усиления ×${cardMult}! +${realPts} pts!`,"achievement");
+  m.score+=realPts;m.tod++;m.tot++;m.verified=(m.verified||0)+1;m.money=(m.money||0)+v.pts*50;
+  addTasksToCardProgress(m,1);
+  if(isSprint&&finalPts>pts)toast(`🚀 СПРИНТ! +${finalPts} pts (×2)!`,"points");
+    // Определяем тип задачи
+    const task=S.tasks.find(t=>t.id===v.taskId)||{src:"own"};
+    if(task.src==="competitor")m.comp=(m.comp||0)+1;
+    if(task.src==="refusal")m.ref=(m.ref||0)+1;
+    if(task.status!==undefined)task.status="done";
+    checkAch(m,task);
+    globalLog({mgrId:v.mgrId,mgrName:v.mgrName,client:v.client,action:"✅ "+v.action,comment:v.comment,pts:v.pts,status:"done",taskId:v.taskId,type:"verify"});
+    toast(`✅ Подтверждено! +${v.pts} pts → ${v.mgrName}`,"success");
+  }else{
+    m.score=Math.max(0,(m.score||0)-50);
+    const task=S.tasks.find(t=>t.id===v.taskId);
+    if(task)task.status="rejected";
+    if(S.globalHistory){
+      const logEntry=S.globalHistory.find(h=>h.taskId===v.taskId&&h.status==='pending');
+      if(logEntry){logEntry.status='rejected';}
+    }
+    globalLog({mgrId:v.mgrId,mgrName:v.mgrName,client:v.client,action:'❌ Отклонено: '+v.action,comment:v.comment,pts:-50,status:'rejected',taskId:v.taskId,type:'reject'});
+    globalLog({mgrId:v.mgrId,mgrName:v.mgrName,client:v.client,action:"❌ Откл: "+v.action,comment:v.comment,pts:-50,status:"rejected",taskId:v.taskId,type:"reject"});
+    toast(`❌ Отклонено. −50 pts → ${v.mgrName}`,"warn");
+  }
+  S.pendingVerify.splice(idx,1);
+  save();rAll();
+}
+
+// ============================================================
+// ЕЖЕДНЕВНЫЙ БОНУС
+// ============================================================
+function claimDaily(){
+  if(S.daily)return;
+  
+  S.daily=true;
+  const m=S.mgrs[S.cur];
+  const bonus=50*Math.min(m.streak>0?m.streak:1,7);
+  m.score+=bonus;save();
+  toast(`+${bonus} очков за вход! 🎁`,"points");rAll();
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function rMgrs(){
+  const m=S.mgrs[S.cur];
+  // Обновляем имя менеджера в заголовке задач
+  const lbl=document.getElementById("mgrTagLabel");
+  if(lbl&&m)lbl.textContent="("+m.n+")";
+  // Обновляем имя в score widget
+  const swn=document.getElementById("swName");
+  if(swn&&m)swn.textContent=m.n+" · очки";
+}
+
+function rScore(){
+  const m=S.mgrs[S.cur]||{};const sc=m.score||0;
+  const rank=getRank(sc);const next=getNextR(sc);
+  document.getElementById("myScore").textContent=sc.toLocaleString();
+  document.getElementById("myRank").textContent="Ранг: "+rank.n;
+  document.getElementById("myRank").style.color=rank.c;
+  document.getElementById("strN").textContent=m.streak||0;
+  document.getElementById("todN").textContent=m.tod||0;
+  document.getElementById("totN").textContent=m.tot||0;
+  const pct=next?Math.min((sc-rank.m)/(next.m-rank.m)*100,100):100;
+  document.getElementById("swProgFill").style.width=pct+"%";
+  document.getElementById("swProgLbl").textContent=next?`До «${next.n}»: ${next.m-sc} pts`:"🏆 Максимальный ранг!";
+  document.getElementById("mgrTagLabel").textContent=m.n?"("+m.n+")":"";
+  // Прогресс к призу
+  const pp=getPrizeProgress(sc);
+  let ppEl=document.getElementById("prizeProgress");
+  if(!ppEl){
+    const sb=document.querySelector(".sbox");
+    if(sb){
+      ppEl=document.createElement("div");ppEl.id="prizeProgress";ppEl.className="prize-progress";
+      sb.appendChild(ppEl);
+    }
+  }
+  if(ppEl){ppEl.innerHTML=`<div class="pp-row"><span>До: ${pp.name}</span><span>${pp.pct}%</span></div>
+    <div class="pp-bar"><div class="pp-fill" style="width:${pp.pct}%;background:${pp.pct>=100?'var(--green)':pp.pct>=60?'var(--gold)':'var(--accent)'}"></div></div>`;}
+  // Рекорд дня
+  let recEl=document.getElementById("dayRecord");
+  if(!recEl){
+    const sb=document.querySelector(".sbox");
+    if(sb){recEl=document.createElement("div");recEl.id="dayRecord";recEl.className="record-row";sb.appendChild(recEl);}
+  }
+  if(recEl){recEl.innerHTML=`<span>🏅 Рекорд дня: </span><span class="record-val">${m.dayRecord||0} задач</span> <span>Серия: 🔥×${Math.min(m.streak||0,7)}</span>`;}
+  // Money
+  const money=Math.round((m.money||0)/1000);
+  document.getElementById("moneyVal").textContent=money>0?money+"к руб":"0 руб";
+  // Season progress
+  const sp=seasonProgress();
+  document.getElementById("dayLabel").textContent=sp.day?`День ${sp.day}/${sp.total}:`:"";
+  document.getElementById("sbarFill").style.width=sp.pct+"%";
+}
+
+function rLB(){
+  const all=allM().sort((a,b)=>b.score-a.score);
+  const em=["👑","🥈","🥉"];
+  document.getElementById("lboard").innerHTML=all.map((m,i)=>{
+    const me=m.id===S.cur;
+    return`<div class="lb-row${me?" me":""}">
+      <div class="lb-rank${i<3?" r"+(i+1):""}">${em[i]||i+1}</div>
+      <div class="lb-av" style="background:${(m.c||"#aaa")}22;border-color:${(m.c||"#aaa")}55">${m.e||"👤"}</div>
+      <div class="lb-info"><div class="lb-name">${m.n}${me?" · ты":""}</div>
+      <div class="lb-sub">${m.streak>0?"🔥 "+m.streak+" дн":""} ${m.comp>0?"🎯"+m.comp:""}</div></div>
+      <div class="lb-pts">${(m.score||0).toLocaleString()}</div>
+    </div>`;
+  }).join("");
+}
+
+function rAch(){
+  const ach=S.mgrs[S.cur]?.ach||[];
+  document.getElementById("achGrid").innerHTML=ACHIEVEMENTS.map(a=>{
+    const ok=ach.includes(a.id);
+    return`<div class="ach2${ok?" unlocked":" locked"}" title="${a.n}: ${ok?"✅ Получено":"🔒 Заблокировано"}"><span>${a.e}</span><span class="ach2-n">${a.n}</span></div>`;
+  }).join("");
+}
+
+function rTasks(){
+  const f=S.filter;
+  let list=S.tasks;
+  if(f==="all"){}
+  else if(f==="comp")list=S.tasks.filter(t=>t.src==="competitor");
+  else if(f==="ref")list=S.tasks.filter(t=>t.src==="refusal");
+  else list=S.tasks.filter(t=>t.type===f);
+  
+  const active=list.filter(t=>t.status==="active").length;
+  const pending=list.filter(t=>t.status==="pending").length;
+  const done=list.filter(t=>t.status==="done").length;
+  document.getElementById("taskCount").textContent=`${active} активных · ${pending} на проверке · ${done} выполнено`;
+  const fire=S.tasks.filter(t=>t.abc==="A"&&t.mo>6&&t.status==="active").length;
+  const fb=document.getElementById("fireBadge2");
+  if(fb){
+    if(fire>0){fb.style.display="flex";fb.textContent=`🔥 ${fire} A-клиентов молчат 6+ мес!`;}
+    else{fb.style.display="none";}
+  }
+
+  document.getElementById("tasksList").innerHTML=list.map(t=>{
+    const srcLabel=t.src==="competitor"?"🎯 Конкурент":t.src==="refusal"?"♻️ Отказник":"💼 Свой";
+    const srcCls=t.src==="competitor"?"tg-comp":t.src==="refusal"?"tg-ref":"tg-sum";
+    const st=t.status;
+    return`<div class="task-card ${t.type}${st==="done"?" done":st==="pending"?" pending":st==="rejected"?" rejected":""}">
+      <div class="tc-top">
+        <div class="tc-client">${t.tag} ${t.client}</div>
+        <div class="tc-pts">${st==="done"?"✓":st==="pending"?"⏳":st==="rejected"?"✗":"+"+t.pts} pts</div>
+      </div>
+      <div class="tc-action"><span>${t.emoji}</span><span>${t.action}</span></div>
+      <div class="tc-reason">${t.reason}</div>
+      <div class="tc-tags">
+        <span class="tg tg-${t.abc.toLowerCase()}">${t.abc}-клиент</span>
+        <span class="tg tg-sum">${Math.round(t.sum/1000)}к руб</span>
+        <span class="tg ${srcCls}">${srcLabel}</span>
+        ${t.inactive>6?`<span class="tg tg-mo">Нет ${t.inactive} мес</span>`:""}
+        ${st==="pending"?`<span class="tg tg-pend">⏳ На проверке</span>`:""}
+        ${st==="rejected"?`<span class="tg tg-mo">❌ Отклонено</span>`:""}
+      </div>
+      ${st==="done"&&S.isRop?`<button style="width:100%;margin-top:8px;padding:7px;border-radius:var(--r);border:1px solid rgba(52,211,153,.3);background:rgba(52,211,153,.08);color:var(--accent3);font-family:Inter,sans-serif;font-weight:700;font-size:.74rem;cursor:pointer" onclick="openMega('${t.id}')">💰 Зафиксировать оплату</button>`:""}
+      ${st==="active"?`
+      <span class="tc-script-toggle" id="scl_${t.id}" onclick="toggleScript('${t.id}')">💬 Скрипт разговора</span>
+      <div class="tc-script-box" id="sc_${t.id}">${SCRIPTS[t.type]||SCRIPTS["warm"]}</div>
+      <div class="tc-actions">
+        <button class="tc-do-btn ${t.btn}" onclick="openProof('${t.id}',event)">${t.btnT}</button>
+        <button class="tc-sos" onclick="sendSOS('${t.id}')" title="SOS — нужна помощь РОПа">🆘</button>
+      </div>`:""}
+    </div>`}).join("");
+}
+
+function rAll(){rMgrs();rScore();rLB();rAch();rTasks();rVerifyPanel();
+  document.getElementById("dailyBtn").disabled=S.daily;
+  document.getElementById("dailyBtn").textContent=S.daily?"✅ Получено":"ЗАБРАТЬ +50 ⚡";
+  rCompChart();rHistory();checkSprint();rFeed();rPrizeProgress();
+  rTeam();rDuel();rBoss();rMap();rCards();
+  // Проверка территорий при каждом рендере
+  const m=S.mgrs[S.cur];if(m)checkRegionCapture(m);
+}
+
+// ============================================================
+// ДЕЙСТВИЯ
+// ============================================================
+function selMgr(id){S.cur=id;S.tasks=genTasks(id);S.filter="all";document.querySelectorAll(".fbtn").forEach((b,i)=>b.classList.toggle("active",i===0));rAll();}
+function filterTasks(type,btn){S.filter=type;document.querySelectorAll(".fbtn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");rTasks();}
+
+// Патч: openProof получает taskId напрямую
+
+function checkAch(m,t){
+  const ach=m.ach||[];const newA=[];
+  ACHIEVEMENTS.forEach(a=>{
+    if(ach.includes(a.id))return;
+    let ok=false;
+    if(a.t==="total"&&m.tot>=a.th)ok=true;
+    if(a.t==="streak"&&m.streak>=a.th)ok=true;
+    if(a.t==="score"&&m.score>=a.th)ok=true;
+    if(a.t==="competitor"&&(m.comp||0)>=a.th)ok=true;
+    if(a.t==="refusal"&&(m.ref||0)>=a.th)ok=true;
+    if(a.t==="verified"&&(m.verified||0)>=a.th)ok=true;
+    if(a.t==="daily"&&(m.tod||0)>=a.th)ok=true;
+    if(ok){ach.push(a.id);newA.push(a);}
+  });
+  m.ach=ach;
+  if(newA.length){showConfetti();}
+  newA.forEach(a=>setTimeout(()=>toast(`🎖️ ${a.e} ${a.n} разблокировано!`,"achievement"),500));
+  return newA;
+}
+
+// ADD PLAYER
+function openAdd(){document.getElementById("addModal").classList.add("open");document.getElementById("newName").value="";}
+function closeModal(){document.getElementById("addModal").classList.remove("open");}
+document.getElementById("ePick2").addEventListener("click",e=>{const t=e.target.closest(".ep2");if(!t)return;document.querySelectorAll(".ep2").forEach(el=>el.classList.remove("sel"));t.classList.add("sel");S.addE=t.dataset.e;});
+document.getElementById("cPick2").addEventListener("click",e=>{const t=e.target.closest(".cp2");if(!t)return;document.querySelectorAll(".cp2").forEach(el=>el.classList.remove("sel"));t.classList.add("sel");S.addC=t.dataset.c;});
+
+function confirmAdd(){
+  const name=document.getElementById("newName").value.trim();
+  if(!name){document.getElementById("newName").style.borderColor="var(--red)";return;}
+  const id="m"+Date.now();
+  const newPin=String(Math.floor(1000+Math.random()*8999));
+  MANAGER_PINS[id]=newPin;
+  S.mgrs[id]={score:0,streak:0,tod:0,tot:0,ldate:"",ach:[],acl:0,comp:0,ref:0,verified:0,money:0,n:name,e:S.addE,c:S.addC};
+  toast(`🔑 PIN нового менеджера ${name}: ${newPin} (запомни!)`, 'achievement');
+  // Перераспределяем часть liza-клиентов
+  const lc=CLIENTS.filter(c=>c.mgr==="liza");
+  const take=Math.floor(lc.length*0.25);
+  lc.slice(0,take).forEach(c=>c.mgr=id);
+  save();closeModal();toast(`🎉 ${name} добавлен в игру!`,"achievement");
+  S.cur=id;S.tasks=genTasks(id);rAll();
+}
+
+// HELPERS
+function toast(msg,type){
+  const w=document.getElementById("toastWrap");const t=document.createElement("div");
+  t.className=`toast ${type}`;t.textContent=msg;w.appendChild(t);
+  setTimeout(()=>{t.style.transition="all .3s";t.style.opacity="0";t.style.transform="translateX(110%)";setTimeout(()=>t.remove(),320);},2600);
+}
+function showCombo(txt,sub){
+  const b=document.getElementById("comboBanner");
+  document.getElementById("comboT").textContent=txt;document.getElementById("comboS").textContent=sub;
+  b.classList.remove("show");void b.offsetWidth;b.classList.add("show");
+  setTimeout(()=>b.classList.remove("show"),1700);
+}
+function updateTimer(){
+  const end=new Date(2026,7,28,17,0,0),diff=end-new Date();
+  if(diff<=0){document.getElementById("sTimer").textContent="ФИНАЛ!";return;}
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000);
+  document.getElementById("sTimer").textContent=`${d}д ${h}ч`;
+}
+
+function updateClock(){const now=new Date();const h=String(now.getHours()).padStart(2,"0");const m=String(now.getMinutes()).padStart(2,"0");const s=String(now.getSeconds()).padStart(2,"0");const el=document.getElementById("tbClock");if(el)el.textContent=`Время: ${h}:${m}:${s}`;}
+
+// ============================================================
+// INIT
+// ============================================================
+
+// ===== МОТИВАЦИОННЫЕ ФРАЗЫ =====
+
+// ============================================================
+// КОНФИГУРАЦИЯ БЕЗОПАСНОСТИ
+// ============================================================
+const ROP_PASSWORD="12345";
+const MANAGER_PINS={roman:"1111",ekaterina:"2222",liza:"3333",yana:"4444",svetlana:"5555",victoria:"6666"};
+let authSelMgr=null,authIsRop=false;
+
+// ============================================================
+// АВТОРИЗАЦИЯ
+// ============================================================
+function initAuth(){
+  const saved=localStorage.getItem("crmAuth_v5");
+  if(saved){try{const a=JSON.parse(saved);if(a.id&&S.mgrs[a.id]){S.cur=a.id;S.isRop=!!a.isRop;showGame();return;}}catch(e){}}
+  showAuthScreen();
+}
+function showAuthScreen(){
+  document.getElementById("authScreen").classList.add("show");
+  document.getElementById("mainWrap").style.display="none";
+  renderAuthGrid();
+}
+function showGame(){
+  document.getElementById("authScreen").classList.remove("show");
+  document.getElementById("mainWrap").style.display="block";
+  const hb=document.getElementById("histBtn");if(hb)hb.style.display=S.isRop?"block":"none";
+  const rb=document.querySelector(".tb-btn.rop");if(rb)rb.style.display=S.isRop?"flex":"none";
+  const lb2=document.getElementById("logoutBtn2");if(lb2)lb2.style.display="flex";
+  const tsb=document.getElementById("teamSetBtn");if(tsb)tsb.style.display=S.isRop?"inline-block":"none";
+  const bsb=document.getElementById("bossSetBtn");if(bsb)bsb.style.display=S.isRop?"inline-block":"none";
+  S.tasks=genTasks(S.cur);
+  rAll();
+  initDropZone();
+}
+function renderAuthGrid(){
+  const grid=document.getElementById("authMgrGrid");if(!grid)return;
+  const all=Object.entries(S.mgrs).map(([id,m])=>({id,...m}));
+  grid.innerHTML=all.map(m=>`<div class="auth-mgr-btn" onclick="selectAuthMgr('${m.id}')" id="authBtn_${m.id}">
+    <div style="font-size:1.2rem;margin-bottom:2px">${m.e||"👤"}</div>
+    <div class="auth-mgr-name">${m.n}</div>
+    <div class="auth-mgr-pts">${m.score||0} pts</div>
+  </div>`).join("");
+  document.getElementById("authPinWrap").style.display="none";
+  authSelMgr=null;authIsRop=false;
+}
+function selectAuthMgr(id){
+  authSelMgr=id;authIsRop=false;
+  document.querySelectorAll(".auth-mgr-btn").forEach(b=>b.classList.remove("sel"));
+  document.getElementById("authBtn_"+id)?.classList.add("sel");
+  document.getElementById("authPinWrap").style.display="block";
+  const pinEl=document.getElementById("authPin");
+  pinEl.type="password"; pinEl.maxLength=10;
+  pinEl.value="";
+  document.getElementById("authErr").textContent="";
+  pinEl.placeholder="PIN (4 цифры)";
+  pinEl.focus();
+}
+function switchToRop(){
+  authSelMgr=null;authIsRop=true;
+  document.querySelectorAll(".auth-mgr-btn").forEach(b=>b.classList.remove("sel"));
+  document.getElementById("authPinWrap").style.display="block";
+  const pinEl=document.getElementById("authPin");
+  pinEl.type="text";
+  pinEl.maxLength=10;
+  pinEl.placeholder="Пароль";
+  document.getElementById("authPin").value="";
+  document.getElementById("authErr").textContent="";
+  document.getElementById("authPin").focus();
+}
+function doAuth(){
+  const pin=document.getElementById("authPin").value.trim();
+  const err=document.getElementById("authErr");
+  if(authIsRop){
+    if(pin!==ROP_PASSWORD){err.textContent="Неверный пароль РОПа ❌";document.getElementById("authPin").value="";return;}
+    S.isRop=true;S.cur=S.cur||Object.keys(S.mgrs)[0];
+    localStorage.setItem("crmAuth_v5",JSON.stringify({id:S.cur,isRop:true}));
+    showGame();return;
+  }
+  if(!authSelMgr){err.textContent="Выбери своё имя";return;}
+  const correctPin=MANAGER_PINS[authSelMgr]||String(Math.floor(parseInt(authSelMgr.replace(/\D/g,"")||"1234")%9000+1000));
+  if(pin!==correctPin){err.textContent="Неверный PIN-код ❌";document.getElementById("authPin").value="";return;}
+  S.cur=authSelMgr;S.isRop=false;
+  localStorage.setItem("crmAuth_v5",JSON.stringify({id:authSelMgr,isRop:false}));
+  showGame();
+}
+function doLogout(){
+  localStorage.removeItem("crmAuth_v5");S.isRop=false;
+  const lb2=document.getElementById("logoutBtn2");if(lb2)lb2.style.display="none";
+  showAuthScreen();
+}
+function addLogoutBtn(){
+  if(document.getElementById("logoutBtn"))return;
+  const btn=document.createElement("button");
+  btn.id="logoutBtn";btn.textContent="Выйти";
+  btn.style.cssText="padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:rgba(255,255,255,.5);font-family:'Exo 2',sans-serif;cursor:pointer;font-size:.72rem;margin-left:8px;transition:all .2s";
+  btn.onmouseenter=()=>btn.style.background="rgba(255,255,255,.1)";
+  btn.onmouseleave=()=>btn.style.background="rgba(255,255,255,.05)";
+  btn.onclick=doLogout;
+  const ws=document.getElementById("tbClock");if(ws&&ws.parentNode)ws.parentNode.insertBefore(btn,ws.nextSibling);
+}
+
+// ============================================================
+// ГЛОБАЛЬНЫЙ ЛОГ ДЕЙСТВИЙ
+// ============================================================
+function globalLog(entry){
+  if(!S.globalHistory)S.globalHistory=[];
+  S.globalHistory.unshift({
+    ts:new Date().toISOString(),mgrId:entry.mgrId||S.cur,
+    mgrName:entry.mgrName||(S.mgrs[S.cur]?.n||"—"),
+    client:entry.client||"—",action:entry.action||"—",
+    comment:entry.comment||"",pts:entry.pts||0,amount:entry.amount||0,
+    status:entry.status||"done",taskId:entry.taskId||"",type:entry.type||"task",
+  });
+  if(S.globalHistory.length>500)S.globalHistory=S.globalHistory.slice(0,500);
+  rFeed();
+}
+
+// ============================================================
+// ЛЕНТА СОБЫТИЙ
+// ============================================================
+
+function rPrizeProgress(){
+  const m=S.mgrs[S.cur];if(!m)return;
+  const sc=m.score||0;
+  const prizes=[
+    {icon:"🥉",name:"Бронза",pts:3000,color:"#CD7F32"},
+    {icon:"🥈",name:"Серебро",pts:6000,color:"#B0B8C8"},
+    {icon:"👑",name:"Чемпион",pts:10000,color:"var(--gold)"},
+  ];
+  const box=document.getElementById("prizeProgWidget");
+  if(!box)return;
+  box.innerHTML=`<div class="ppw-title"><span>🎁 До приза</span></div>`+
+    prizes.map(p=>{
+      const pct=Math.min(Math.round(sc/p.pts*100),100);
+      return`<div class="ppw-item">
+        <div class="ppw-icon">${p.icon}</div>
+        <div class="ppw-info">
+          <div class="ppw-name" style="color:${p.color}">${p.name}</div>
+          <div class="ppw-pts">${sc.toLocaleString()}/${p.pts.toLocaleString()} pts (${pct}%)</div>
+          <div class="ppw-bar"><div class="ppw-bar-fill" style="width:${pct}%;background:${p.color}"></div></div>
+        </div>
+      </div>`;
+    }).join("");
+}
+function rFeed(){
+  const list=document.getElementById("feedList");if(!list)return;
+  const hist=(S.globalHistory||[]).slice(0,15);
+  if(!hist.length){list.innerHTML='<div style="font-size:.68rem;color:rgba(255,255,255,.3);text-align:center;padding:8px">Пока тихо...</div>';return;}
+  list.innerHTML=hist.map(h=>{
+    const t=new Date(h.ts);
+    const time=t.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
+    const m=S.mgrs[h.mgrId];const clr=m?.c||"#aaa";
+    const icon=h.type==="mega"?"💰":h.status==="rejected"?"❌":h.status==="pending"?"⏳":"✅";
+    return`<div class="feed-item">
+      <span class="feed-time">${time}</span>
+      <span class="feed-who" style="color:${clr}">${m?.e||"👤"} ${(m?.n||h.mgrName||"").split(" ")[0]}</span>
+      <span class="feed-what">${icon} ${h.client.slice(0,24)} ${h.pts?`<b style="color:var(--accent3)">+${h.pts} pts</b>`:""}</span>
+    </div>`;
+  }).join("");
+}
+
+// ============================================================
+// ПОЛНАЯ ИСТОРИЯ ДЕЙСТВИЙ (РОП)
+// ============================================================
+let fhFilter_v="all";
+function openFullHist(){
+  if(!S.isRop){toast("Только для РОПа","warn");return;}
+  document.getElementById("fullHistModal").classList.add("open");
+  renderFullHist();
+}
+function closeFullHist(){document.getElementById("fullHistModal").classList.remove("open");}
+function fhFilter(type,btn){
+  fhFilter_v=type;
+  document.querySelectorAll(".fh-f").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderFullHist();
+}
+function renderFullHist(){
+  const rows=document.getElementById("fullHistRows");if(!rows)return;
+  let hist=(S.globalHistory||[]).slice();
+  if(fhFilter_v==="pending")hist=hist.filter(h=>h.status==="pending");
+  else if(fhFilter_v==="done")hist=hist.filter(h=>h.status==="done");
+  else if(fhFilter_v==="rejected")hist=hist.filter(h=>h.status==="rejected");
+  else if(fhFilter_v==="mega")hist=hist.filter(h=>h.type==="mega");
+  if(!hist.length){rows.innerHTML='<div style="font-size:.75rem;color:rgba(255,255,255,.35);text-align:center;padding:16px">Нет записей</div>';return;}
+  rows.innerHTML=hist.slice(0,200).map(h=>{
+    const t=new Date(h.ts);
+    const dt=t.toLocaleDateString("ru",{day:"2-digit",month:"2-digit"})+" "+t.toLocaleTimeString("ru",{hour:"2-digit",minute:"2-digit"});
+    const m=S.mgrs[h.mgrId];
+    const sClass=h.status==="done"?"fh-status-done":h.status==="pending"?"fh-status-pending":"fh-status-rejected";
+    const sLabel=h.status==="done"?"✅ ОК":h.status==="pending"?"⏳ Ждёт":"❌ Откл.";
+    return`<div class="fh-row ${h.status}">
+      <div style="color:rgba(255,255,255,.4);font-size:.66rem">${dt}</div>
+      <div style="font-weight:700;color:${m?.c||"#aaa"};font-size:.72rem">${m?.e||"👤"} ${m?.n||h.mgrName}</div>
+      <div style="font-size:.72rem">${h.client.slice(0,18)}</div>
+      <div><div style="font-size:.72rem">${h.action}</div>${h.comment?`<div class="fh-comment">"${h.comment.slice(0,80)}"</div>`:""}</div>
+      <div style="font-family:Orbitron,sans-serif;font-size:.7rem;color:${h.type==="mega"?"var(--green)":"var(--gold)"}">${h.type==="mega"?h.amount.toLocaleString()+" р":h.pts>0?"+"+h.pts+" pts":""}</div>
+      <div class="${sClass}" style="font-size:.7rem">${sLabel}</div>
+    </div>`;
+  }).join("");
+}
+
+const MOTIV=[["🔥", "ОГОНЬ!", "Так держать, чемпион!"], ["💪", "КРАСАВЧИК!", "Ещё одна задача в копилку!"], ["⚡", "МОЛНИЯ!", "Скорость и качество — твоё оружие!"], ["🎯", "В ЦЕЛЬ!", "Точный удар по клиенту!"], ["🚀", "ВЗЛЁТ!", "Ты набираешь высоту!"], ["💎", "АЛМАЗ!", "Такая работа стоит дорого!"], ["🌟", "ЗВЕЗДА!", "Ты сияешь в таблице лидеров!"], ["🏆", "ЧЕМПИОН!", "Так победим!"], ["🔝", "ТОП!", "Продолжай — приз всё ближе!"], ["⚔️", "БОЕЦ!", "Ни один клиент не устоит!"]];
+function showMotiv(){
+  const m=MOTIV[Math.floor(Math.random()*MOTIV.length)];
+  document.getElementById("motivEmoji").textContent=m[0];
+  document.getElementById("motivText").textContent=m[1];
+  document.getElementById("motivSub").textContent=m[2];
+  const p=document.getElementById("motivPopup");
+  p.classList.add("show");
+  setTimeout(()=>p.classList.remove("show"),2200);
+}
+
+// ===== КОНФЕТТИ =====
+function showConfetti(){
+  const colors=["#FFD700","#00f5ff","#00ff88","#ff3366","#b388ff","#ff8c00"];
+  for(let i=0;i<60;i++){
+    setTimeout(()=>{
+      const c=document.createElement("div");
+      c.className="confetti-piece";
+      c.style.left=Math.random()*100+"vw";
+      c.style.top="-10px";
+      c.style.background=colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration=(1.5+Math.random()*1.5)+"s";
+      c.style.animationDelay=Math.random()*0.5+"s";
+      c.style.width=(6+Math.random()*6)+"px";
+      c.style.height=(6+Math.random()*6)+"px";
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),3000);
+    },i*30);
+  }
+}
+
+// ===== СКРИПТЫ РАЗГОВОРА =====
+const SCRIPTS={"hot": "— Добрый день, [Имя]! Это [ваше имя] из Гарантии Качества. Мы работали с вами по [услуга]. Хотел уточнить — всё в порядке с документами? Есть новые задачи? У нас появились интересные предложения...", "warm": "— Здравствуйте, [Имя]! Давно не общались. Звоню просто напомнить о себе — мы всё так же работаем по сертификации, ТУ, декларированию. Может, есть что-то актуальное?", "cool": "— [Имя], добрый день! Знаю, давно не звонил. Хочу узнать — как у вас дела? Есть планы по сертификации в этом квартале? Готов предложить специальные условия для возобновления работы.", "urgent": "— [Имя], добрый день! Это [имя] из Гарантии Качества. Я вижу что счёт у вас висит открытым. Подскажите — всё в порядке? Может, есть вопросы по документам или оплате?", "competitor": "— Добрый день, [Имя]! Меня зовут [имя], Гарантия Качества. Знаю, что вы сейчас работаете с другим подрядчиком. Хочу предложить вам сравнить условия — у нас есть интересные предложения по цене и срокам...", "refusal": "— [Имя], добрый день! Вы когда-то к нам обращались, но по каким-то причинам не сложилось. Хочу узнать — что тогда не подошло? Может, сейчас ситуация изменилась и мы сможем помочь?"};
+function toggleScript(taskId){
+  const box=document.getElementById("sc_"+taskId);
+  if(!box)return;
+  box.classList.toggle("open");
+  const lnk=document.getElementById("scl_"+taskId);
+  if(lnk)lnk.textContent=box.classList.contains("open")?"▲ Скрыть скрипт":"💬 Скрипт разговора";
+}
+
+// ===== СПРИНТ ПЯТНИЦА =====
+function checkSprint(){
+  const day=new Date().getDay(); // 5=пятница
+  const banner=document.getElementById("sprintBar");
+  if(banner)banner.classList.toggle("show",day===5);
+  return day===5;
+}
+
+// ===== ОТПУСК =====
+function toggleVacation(){
+  const m=S.mgrs[S.cur];
+  if(!m)return;
+  if(m.vacation){
+    m.vacation=null;
+    toast("✅ Режим отпуска выключен","success");
+  }else{
+    m.vacation=Date.now()+(5*86400000); // 5 дней
+    toast("🏖️ Серия защищена на 5 дней!","achievement");
+  }
+  save();rScore();
+}
+
+// ===== SOS =====
+function sendSOS(taskId){
+  const t=S.tasks.find(x=>x.id===taskId);
+  if(!t)return;
+  S.pendingVerify.push({
+    tid:"sos_"+Date.now(),taskId,mgrId:S.cur,
+    mgrName:S.mgrs[S.cur]?.n||"—",
+    client:t.client,action:"🆘 SOS — нужна помощь РОПа",
+    comment:"Менеджер сигнализирует о проблеме с клиентом",
+    pts:0,timestamp:new Date().toISOString(),isSOS:true
+  });
+  save();toast("🆘 SOS отправлен РОПу!","warn");
+}
+
+// ===== РЕЙТИНГ КОНКУРЕНТОВ =====
+function rCompChart(){
+  const all=allM().sort((a,b)=>(b.comp||0)-(a.comp||0)).filter(m=>m.comp>0);
+  const list=document.getElementById("compList");
+  if(!list)return;
+  if(!all.length){list.innerHTML='<div style="font-size:.68rem;color:rgba(255,255,255,.3);text-align:center;padding:6px">Пока никто не переманил</div>';return;}
+  const max=all[0].comp||1;
+  list.innerHTML=all.slice(0,5).map(m=>`
+    <div class="comp-row2">
+      <div class="comp-name2">${m.e} ${m.n}</div>
+      <div class="comp-bar2"><div class="comp-fill2" style="width:${Math.round(m.comp/max*100)}%"></div></div>
+      <div class="comp-num2">${m.comp}</div>
+    </div>`).join("");
+}
+
+// ===== ИСТОРИЯ =====
+function addHistory(mgr,action,pts){
+  if(!mgr._hist)mgr._hist=[];
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,"0");
+  const mm=String(now.getMinutes()).padStart(2,"0");
+  mgr._hist.unshift({time:`${hh}:${mm}`,action,pts});
+  if(mgr._hist.length>20)mgr._hist.pop();
+}
+function rHistory(){
+  const m=S.mgrs[S.cur];
+  const list=document.getElementById("histList");
+  if(!list||!m)return;
+  const hist=m._hist||[];
+  if(!hist.length){list.innerHTML='<div style="font-size:.68rem;color:rgba(255,255,255,.3);text-align:center;padding:6px">История пуста</div>';return;}
+  list.innerHTML=hist.slice(0,8).map(h=>`
+    <div class="hist-item2">
+      <span class="hi-time">${h.time}</span>
+      <span class="hi-action">${h.action}</span>
+      <span class="hi-pts">${h.pts>0?"+"+h.pts:""}</span>
+    </div>`).join("");
+}
+
+// ===== ПРОГРЕСС К ПРИЗУ =====
+function getPrizeProgress(score){
+  const prizes=[{pts:3000,name:"🥉 Бронза"},{pts:6000,name:"🥈 Серебро"},{pts:10000,name:"👑 Чемпион"}];
+  for(const p of prizes){
+    if(score<p.pts)return{name:p.name,current:score,target:p.pts,pct:Math.round(score/p.pts*100)};
+  }
+  return{name:"👑 Максимум достигнут!",current:score,target:score,pct:100};
+}
+
+// ===== РЕКОРД ДНЯ =====
+function updateRecord(m){
+  if((m.tod||0)>(m.dayRecord||0))m.dayRecord=m.tod;
+}
+
+
+// ============================================================
+// МЕГАБОНУС — РЕАЛЬНАЯ ОПЛАТА
+// ============================================================
+let megaTaskId=null,megaSelAmt=0;
+const POWER_CARDS_DEF=[
+  {id:"x2_3",icon:"⚡",name:"×2 на 3 задачи",desc:"Следующие 3 ×2 очков",uses:3,type:"multiplier",val:2},
+  {id:"x3_1",icon:"💥",name:"×3 УДАР",desc:"Следующая задача ×3",uses:1,type:"multiplier",val:3},
+  {id:"streak_save",icon:"🛡️",name:"Щит серии",desc:"Защита 7 дней",uses:1,type:"streak",val:7},
+  {id:"bonus100",icon:"💎",name:"+100 pts",desc:"Мгновенный бонус",uses:1,type:"bonus",val:100},
+  {id:"bonus_roul",icon:"🎁",name:"Бонус-рулетка",desc:"Доп. прокрутка рулетки",uses:1,type:"roulette",val:1},
+];
+
+function openMega(taskId){
+  megaTaskId=taskId;megaSelAmt=0;
+  const t=S.tasks.find(x=>x.id===taskId);
+  document.getElementById("megaClient").textContent=t?t.client:"Клиент";
+  document.getElementById("megaAmount").value="";
+  document.getElementById("megaPtsPreview").textContent="Бонус: рассчитается автоматически";
+  document.querySelectorAll(".mega-pts-btn").forEach(b=>b.classList.remove("sel"));
+  document.getElementById("megaModal").classList.add("open");
+}
+function closeMega(){document.getElementById("megaModal").classList.remove("open");megaTaskId=null;}
+function setMegaAmt(v){
+  megaSelAmt=v;
+  document.getElementById("megaAmount").value=v;
+  document.querySelectorAll(".mega-pts-btn").forEach(b=>b.classList.remove("sel"));
+  event.target.classList.add("sel");
+  updateMegaPreview();
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  const inp=document.getElementById("megaAmount");
+  if(inp)inp.addEventListener("input",updateMegaPreview);
+});
+function updateMegaPreview(){
+  const v=parseInt(document.getElementById("megaAmount").value)||0;
+  const pts=calcMegaPts(v);
+  document.getElementById("megaPtsPreview").textContent=pts>0?`🎉 Бонус: +${pts} pts за оплату ${v.toLocaleString()} руб!`:"Введи сумму";
+}
+function calcMegaPts(sum){
+  if(sum<=0)return 0;
+  if(sum<10000)return 300;
+  if(sum<30000)return 500;
+  if(sum<60000)return 750;
+  if(sum<100000)return 1000;
+  return 1500;
+}
+function confirmMega(){
+  const amt=parseInt(document.getElementById("megaAmount").value)||megaSelAmt;
+  if(amt<1000){toast("Введи сумму оплаты!","warn");return;}
+  const m=S.mgrs[S.cur];
+  const pts=calcMegaPts(amt);
+  m.score+=pts;
+  m.money=(m.money||0)+amt;
+  const t=S.tasks.find(x=>x.id===megaTaskId);
+  if(t){t.status="done";addHistory(m,"💰 ОПЛАТА: "+t.client.slice(0,25),pts);}
+  addTasksToCardProgress(m,1);
+  checkAch(m,{});
+  showConfetti();showConfetti();
+  globalLog({client:(S.tasks.find(x=>x.id===megaTaskId)||{client:'—'}).client,action:'💰 РЕАЛЬНАЯ ОПЛАТА зафиксирована',comment:'Сумма: '+amt.toLocaleString()+' руб',pts,amount:amt,status:'done',taskId:megaTaskId||'',type:'mega'});
+  globalLog({client:"",action:"💰 ОПЛАТА "+amt.toLocaleString()+" руб",comment:"",pts,amount:amt,status:"done",type:"mega"});
+  toast(`💰 МЕГАБОНУС! +${pts} pts за ${amt.toLocaleString()} руб!`,"points");
+  closeMega();save();rAll();
+}
+// Кнопка мегабонус в карточке задачи (добавим позже через rTasks)
+S._megaReady=true;
+
+// ============================================================
+// КОМАНДНЫЙ ЧЕЛЛЕНДЖ
+// ============================================================
+function setTeamGoal(){
+  if(!S.isRop){toast("Только РОП может ставить командную цель","warn");return;}
+  const goal=prompt("Командная цель (кол-во задач на неделю):\nНапр: 50");
+  if(!goal||isNaN(parseInt(goal)))return;
+  const n=parseInt(goal);
+  const reward=prompt("Бонус каждому за выполнение (pts):\nНапр: 300");
+  const r=parseInt(reward)||200;
+  S.teamGoal={target:n,reward:r,start:Date.now(),done:0,week:getWeekNum()};
+  save();rTeam();toast(`📋 Командная цель: ${n} задач → +${r} pts каждому!`,"achievement");
+}
+function getWeekNum(){
+  const d=new Date();const onejan=new Date(d.getFullYear(),0,1);
+  return Math.ceil((((d-onejan)/86400000)+onejan.getDay()+1)/7);
+}
+function countTeamDone(){
+  let cnt=0;
+  Object.values(S.mgrs).forEach(m=>{cnt+=(m.tod||0);});
+  return cnt;
+}
+function rTeam(){
+  const box=document.getElementById("teamContent");
+  if(!box)return;
+  const g=S.teamGoal;
+  if(!g||g.week!==getWeekNum()){
+    box.innerHTML='<div style="font-size:.68rem;color:rgba(255,255,255,.35);text-align:center;padding:8px">РОП ещё не поставил командную цель</div>';
+    return;
+  }
+  const done=countTeamDone();
+  const pct=Math.min(Math.round(done/g.target*100),100);
+  const left=Math.max(g.target-done,0);
+  // Начисляем всем если цель выполнена
+  if(done>=g.target&&!g.rewarded){
+    g.rewarded=true;
+    Object.values(S.mgrs).forEach(m=>{m.score=(m.score||0)+g.reward;});
+    toast(`🎉 КОМАНДНАЯ ЦЕЛЬ ВЫПОЛНЕНА! +${g.reward} pts каждому!`,"achievement");
+    showConfetti();save();
+  }
+  box.innerHTML=`
+    <div class="team-goal-row">
+      <div><div class="team-count">${done}</div><div class="team-of">из ${g.target} задач</div></div>
+      <div class="team-prog-bar"><div class="team-prog-fill" style="width:${pct}%"></div></div>
+      <div style="font-family:Orbitron,sans-serif;font-size:.9rem;color:${pct>=100?'var(--green)':'rgba(255,255,255,.5)'};">${pct}%</div>
+    </div>
+    <div style="font-size:.68rem;color:var(--text3);margin-top:2px">${pct>=100?'✅ ЦЕЛЬ ВЫПОЛНЕНА! +'+g.reward+' pts всем!':(left+' задач осталось → +'+g.reward+' pts каждому')}</div>`;
+}
+
+// ============================================================
+// ДУЭЛЬ 1 НА 1
+// ============================================================
+function openDuel(){
+  const others=Object.entries(S.mgrs).filter(([id])=>id!==S.cur);
+  if(!others.length){toast("Нет других игроков для дуэли","warn");return;}
+  const box=document.getElementById("duelContent");
+  box.innerHTML=`<div style="font-size:.72rem;color:rgba(255,255,255,.6);margin-bottom:6px">Выбери соперника:</div>
+    <div class="duel-pick">${others.map(([id,m])=>`<button class="duel-pick-btn" onclick="startDuel('${id}')">${m.e||"👤"} ${m.n}</button>`).join("")}</div>
+    <button class="duel-btn" onclick="rDuel()" style="margin-top:8px;background:transparent;border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.4)">✕ Отмена</button>`;
+}
+function startDuel(oppId){
+  if(S.duel&&Date.now()<S.duel.end){toast("Уже есть активная дуэль!","warn");return;}
+  const opp=S.mgrs[oppId];
+  S.duel={me:S.cur,opp:oppId,myStart:S.mgrs[S.cur].tot,oppStart:opp.tot,start:Date.now(),end:Date.now()+3*86400000};
+  save();rDuel();
+  toast(`⚔️ ДУЭЛЬ объявлена: ты vs ${opp.n}! 3 дня!`,"achievement");
+}
+function rDuel(){
+  const box=document.getElementById("duelContent");
+  if(!box)return;
+  const d=S.duel;
+  if(!d||Date.now()>d.end||d.me!==S.cur&&d.opp!==S.cur){
+    // Нет дуэли для текущего
+    box.innerHTML=`<div style="font-size:.68rem;color:rgba(255,255,255,.35);text-align:center;padding:6px">Нет активных дуэлей</div>
+      <button class="duel-btn" onclick="openDuel()">⚔️ ВЫЗВАТЬ КОЛЛЕГУ</button>`;
+    return;
+  }
+  const me=S.mgrs[d.me];const opp=S.mgrs[d.opp];
+  const myScore=me.tot-(d.me===S.cur?d.myStart:d.oppStart);
+  const oppScore=opp.tot-(d.opp===S.cur?d.myStart:d.oppStart);
+  const myIsMe=d.me===S.cur;
+  const myN=myIsMe?me.n:opp.n;const oppN=myIsMe?opp.n:me.n;
+  const myS=myIsMe?myScore:oppScore;const oppS=myIsMe?oppScore:myScore;
+  const total=Math.max(myS+oppS,1);
+  const pct=Math.round(myS/total*100);
+  const left=Math.ceil((d.end-Date.now())/86400000);
+  // Проверка победителя
+  if(Date.now()>=d.end&&!d.rewarded){
+    d.rewarded=true;
+    const winner=myS>=oppS?d.me:d.opp;
+    const loser=winner===d.me?d.opp:d.me;
+    const steal=Math.round((S.mgrs[loser].score||0)*0.05);
+    S.mgrs[winner].score=(S.mgrs[winner].score||0)+steal+200;
+    S.mgrs[loser].score=Math.max(0,(S.mgrs[loser].score||0)-steal);
+    toast(`⚔️ ДУЭЛЬ ЗАВЕРШЕНА! ${S.mgrs[winner].n} победил! +${steal+200} pts!`,"achievement");
+    showConfetti();save();
+  }
+  box.innerHTML=`<div class="duel-versus">
+    <div class="duel-side"><div class="duel-name">Ты</div><div class="duel-score" style="color:${myS>=oppS?'var(--green)':'var(--red)'}">${myS}</div></div>
+    <div class="duel-vs-label">VS</div>
+    <div class="duel-side"><div class="duel-name">${oppN}</div><div class="duel-score" style="color:${oppS>myS?'var(--green)':'var(--red)'}">${oppS}</div></div>
+  </div>
+  <div class="duel-pbar"><div class="duel-pfill" style="width:${pct}%;background:${myS>=oppS?'var(--green)':'var(--red)'}"></div></div>
+  <div style="font-size:.65rem;color:var(--text3);text-align:center;margin-top:4px">⏱ Осталось: ${left>0?left+" дней":"Дуэль завершена"}</div>`;
+}
+
+// ============================================================
+// СЕЗОННЫЙ БОСС
+// ============================================================
+const BOSS_CLIENTS=[
+  {name:"ООО ЦС «Центр Стандартизации»",ops:629,sum:8206200},
+  {name:"ООО ЦС «Система»",ops:59,sum:5455150},
+  {name:"ООО РСЦ Москва",ops:106,sum:3190050},
+  {name:"ООО ТехПромСерт СПб",ops:61,sum:2910250},
+  {name:"ООО ПромТехСерт НСК",ops:193,sum:1443200},
+];
+function setBoss(){
+  if(!S.isRop){toast("Только РОП назначает босса","warn");return;}
+  const opts=BOSS_CLIENTS.map((b,i)=>`${i+1}. ${b.name} (${b.ops} заказов)`).join("\n");
+  const pick=prompt("Выбери босса (1-5):\n"+opts);
+  const idx=parseInt(pick)-1;
+  if(idx<0||idx>=BOSS_CLIENTS.length)return;
+  const b=BOSS_CLIENTS[idx];
+  S.boss={...b,hp:100,defeated:false,reward:1000,deadline:Date.now()+14*86400000};
+  save();rBoss();toast(`🏰 БОСС НАЗНАЧЕН: ${b.name}! Охота начинается!`,"achievement");
+}
+function attackBoss(){
+  if(!S.boss||S.boss.defeated){toast("Нет активного босса","warn");return;}
+  // Создаём задачу-босс
+  const bTask={
+    id:`boss_${Date.now()}`,client:S.boss.name,abc:"A",sum:S.boss.sum,mo:0,
+    src:"competitor",tag:"🏰",type:"cool",action:"АТАКА БОССА",
+    emoji:"⚔️",reason:"Это БОСС — VIP-клиент конкурентов. Первый кто дозвонится — победитель!",
+    pts:S.boss.reward,btn:"revive",btnT:"⚔️ АТАКОВАТЬ БОССА",status:"active"
+  };
+  S.tasks.unshift(bTask);
+  rTasks();toast("⚔️ Задача-атака добавлена в начало списка!","achievement");
+  // Урон боссу
+  S.boss.hp=Math.max(0,S.boss.hp-Math.round(100/Object.keys(S.mgrs).length));
+  if(S.boss.hp<=0&&!S.boss.defeated){
+    S.boss.defeated=true;
+    const m=S.mgrs[S.cur];m.score=(m.score||0)+S.boss.reward;
+    showConfetti();showConfetti();
+    toast(`🏆 БОСС ПОВЕРЖЕН! +${S.boss.reward} pts!`,"achievement");
+  }
+  save();rBoss();
+}
+function rBoss(){
+  const box=document.getElementById("bossContent");
+  if(!box)return;
+  const b=S.boss;
+  if(!b||Date.now()>b.deadline){
+    box.innerHTML='<div style="font-size:.68rem;color:rgba(255,255,255,.35);text-align:center;padding:8px">РОП ещё не назначил босса. Ждите...</div>';
+    return;
+  }
+  const days=Math.ceil((b.deadline-Date.now())/86400000);
+  const hpPct=b.hp;
+  box.innerHTML=`
+    <div class="boss-name">${b.name}</div>
+    <div class="boss-stats">${b.ops} заказов у конкурентов | ${(b.sum/1e6).toFixed(1)} млн руб/год</div>
+    <div class="boss-hp"><div class="boss-hp-fill" style="width:${hpPct}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:.62rem;color:rgba(255,255,255,.35);margin-bottom:4px"><span>HP: ${hpPct}%</span><span>⏱ ${days} дней</span></div>
+    <div class="boss-reward">🏆 Награда первому: +${b.reward} pts</div>
+    ${b.defeated?'<div style="color:var(--green);font-weight:700;text-align:center;margin-top:6px;font-size:.78rem">✅ БОСС ПОВЕРЖЕН!</div>':'<button class="boss-attack" onclick="attackBoss()">⚔️ АТАКОВАТЬ!</button>'}`;
+}
+
+// ============================================================
+// КАРТА ТЕРРИТОРИЙ
+// ============================================================
+const REGIONS=[
+  {id:"spb",name:"СПб",flag:"🏙"},
+  {id:"msk",name:"Москва",flag:"🏛"},
+  {id:"pskov",name:"Псков",flag:"🏰"},
+  {id:"ekb",name:"Урал",flag:"⛏"},
+  {id:"sib",name:"Сибирь",flag:"🌲"},
+  {id:"south",name:"Юг",flag:"☀️"},
+];
+const REGION_MAP={
+  "spb":["e01","cc10","cc11","cc13","l04"],
+  "msk":["cc03","cc14","cc15","v01","v02"],
+  "pskov":["s01","s02","cc01","l01","s03"],
+  "ekb":["cc08","cc17","s09","l05"],
+  "sib":["cc06","cc09","cc19","l08"],
+  "south":["cc12","cc20","s08","s11"],
+};
+function countRegion(regionId){
+  const cids=REGION_MAP[regionId]||[];
+  const myClients=CLIENTS.filter(cl=>cids.includes(cl.id)&&cl.mgr===S.cur);
+  return{mine:myClients.length,total:cids.length};
+}
+function checkRegionCapture(m){
+  if(!m.regions)m.regions={};
+  REGIONS.forEach(r=>{
+    const {mine,total}=countRegion(r.id);
+    const needed=Math.max(Math.ceil(total*0.6),3);
+    if(mine>=needed&&!m.regions[r.id]){
+      m.regions[r.id]=true;m.score=(m.score||0)+200;
+      toast(`🗺️ ТЕРРИТОРИЯ ЗАХВАЧЕНА: ${r.flag} ${r.name}! +200 pts!`,"achievement");
+    }
+  });
+}
+function rMap(){
+  const grid=document.getElementById("mapGrid");
+  if(!grid)return;
+  const m=S.mgrs[S.cur]||{};
+  grid.innerHTML=REGIONS.map(r=>{
+    const {mine,total}=countRegion(r.id);
+    const mine_flag=(m.regions||{})[r.id];
+    const pct=total>0?Math.round(mine/total*100):0;
+    const col=`hsl(${Math.round(pct*1.2)},60%,45%)`;
+    return`<div class="map-cell2${mine_flag?" mine":""}" title="${r.name}: ${mine}/${total} клиентов">
+      <div class="mc-flag">${mine_flag?m.e||"🚩":r.flag}</div>
+      <div class="mc-name">${r.name}</div>
+      <div class="mc-cnt">${mine}/${total}</div>
+      <div class="mc-bar"><div class="mc-bfill" style="width:${pct}%;background:${col}"></div></div>
+    </div>`;
+  }).join("");
+}
+
+// ============================================================
+// РУЛЕТКА
+// ============================================================
+const ROULETTE_PRIZES=[
+  {icon:"⭐",label:"+30 pts",fn:m=>{m.score=(m.score||0)+30;toast("+30 pts от рулетки!","points");}},
+  {icon:"⭐",label:"+30 pts",fn:m=>{m.score=(m.score||0)+30;toast("+30 pts от рулетки!","points");}},
+  {icon:"💫",label:"+70 pts",fn:m=>{m.score=(m.score||0)+70;toast("+70 pts от рулетки!","points");}},
+  {icon:"⚡",label:"×2 след. задача",fn:m=>{m._x2next=2;toast("×2 к следующей задаче!","achievement");}},
+  {icon:"🎯",label:"Горящий клиент",fn:m=>{m.score=(m.score||0)+200;toast("🎯 ГОРЯЩИЙ КЛИЕНТ! +200 pts!","points");showConfetti();}},
+  {icon:"😢",label:"Ничего сегодня",fn:m=>{toast("Ничего... Попробуй завтра 🙁","warn");}},
+  {icon:"💎",label:"+100 pts!",fn:m=>{m.score=(m.score||0)+100;toast("+100 pts!","points");}},
+];
+function spinRoulette(){
+  const m=S.mgrs[S.cur];
+  const today=todayStr();
+  if(m.rouletteDate===today){toast("Рулетка уже сегодня крутилась! Завтра!","warn");return;}
+  m.rouletteDate=today;
+  document.getElementById("rouletteBtn").disabled=true;
+  document.getElementById("rouletteBtn").textContent="Крутится...";
+  const wheel=document.getElementById("rouletteWheel");
+  const icons=["🎰","⭐","💫","🎯","⚡","💎","🃏"];
+  let i=0;const anim=setInterval(()=>{wheel.textContent=icons[i%icons.length];i++;},80);
+  setTimeout(()=>{
+    clearInterval(anim);
+    const prize=ROULETTE_PRIZES[Math.floor(Math.random()*ROULETTE_PRIZES.length)];
+    wheel.textContent=prize.icon;
+    wheel.style.transform="scale(1.4)";
+    setTimeout(()=>wheel.style.transform="scale(1)",300);
+    document.getElementById("rouletteResult").textContent=prize.label;
+    document.getElementById("rouletteBtn").textContent="✅ До завтра!";
+    prize.fn(m);addHistory(m,"🎰 Рулетка: "+prize.label,0);
+    save();rScore();rLB();
+  },1800);
+}
+
+// ============================================================
+// КАРТЫ УСИЛЕНИЙ
+// ============================================================
+function addTasksToCardProgress(m,n){
+  m._cardProgress=(m._cardProgress||0)+n;
+  const threshold=10;
+  while(m._cardProgress>=threshold){
+    m._cardProgress-=threshold;
+    const card=POWER_CARDS_DEF[Math.floor(Math.random()*POWER_CARDS_DEF.length)];
+    if(!m._cards)m._cards=[];
+    m._cards.push({...card,uid:Date.now()+"_"+Math.random().toFixed(4)});
+    toast(`🃏 Новая карта усиления: ${card.icon} ${card.name}!`,"achievement");
+    showConfetti();
+  }
+  rCards();
+}
+function useCard(uid){
+  const m=S.mgrs[S.cur];
+  if(!m._cards)return;
+  const idx=m._cards.findIndex(c=>c.uid===uid);
+  if(idx<0)return;
+  const card=m._cards[idx];
+  if(card.type==="multiplier"){m._x2next=(m._x2next||0)+card.uses*(card.val-1);toast(`${card.icon} ${card.name} активирована!`,"achievement");}
+  else if(card.type==="streak"){m.vacation=Date.now()+(card.val*86400000);toast(`${card.icon} Серия защищена на ${card.val} дней!`,"achievement");}
+  else if(card.type==="bonus"){m.score=(m.score||0)+card.val;toast(`${card.icon} +${card.val} pts!`,"points");}
+  else if(card.type==="roulette"){m.rouletteDate=null;toast("🎁 Дополнительная прокрутка рулетки!","achievement");}
+  m._cards.splice(idx,1);save();rAll();
+}
+function rCards(){
+  const m=S.mgrs[S.cur]||{};
+  const cards=m._cards||[];
+  const list=document.getElementById("cardsList");
+  const prog=m._cardProgress||0;
+  if(document.getElementById("cpFill2"))document.getElementById("cpFill2").style.width=(prog/10*100)+"%";
+  if(document.getElementById("cpTxt2"))document.getElementById("cpTxt2").textContent=`${prog}/10 до следующей карты`;
+  if(!list)return;
+  if(!cards.length){list.innerHTML='<div class="cards-empty">Нет карт. Выполни 10 задач → получишь карту!</div>';return;}
+  list.innerHTML=`<div class="cards-row2">${cards.slice(0,4).map(card=>`
+    <div class="power-card2" onclick="useCard('${card.uid}')" title="${card.desc}">
+      <div class="pc-icon2">${card.icon}</div>
+      <div class="pc-name2">${card.name}</div>
+    </div>`).join("")}</div>`;
+  if(document.getElementById("cardsNext"))document.getElementById("cardsNext").textContent=cards.length>4?`+${cards.length-4} ещё`:"";
+}
+
+// ============================================================
+// ИМПОРТ И ПАРСИНГ БАЗЫ КЛИЕНТОВ / КОНКУРЕНТОВ
+// ============================================================
+
+let importMode = 'clients'; // 'clients' | 'competitors'
+let importParsed = [];       // распознанные записи
+let importAssignTo = 'auto'; // менеджер назначения
+
+function openImport(mode){
+  importMode = mode;
+  importParsed = [];
+  importAssignTo = 'auto';
+  const title = document.getElementById('importTitle');
+  if(title) title.textContent = mode==='competitors'
+    ? '🎯 ИМПОРТ БАЗЫ КОНКУРЕНТОВ' : '📥 ИМПОРТ БАЗЫ КЛИЕНТОВ';
+  // Сброс UI
+  resetImportUI();
+  document.getElementById('importModal').classList.add('open');
+}
+
+function closeImport(){
+  document.getElementById('importModal').classList.remove('open');
+  importParsed = [];
+}
+
+function resetImportUI(){
+  ['parseProgress','parseStats','parsePreview','colMapping',
+   'mgrAssignWrap','importActionBtns','importWarnDup'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display='none';
+  });
+  const el=document.getElementById('parseProgress');
+  if(el)el.classList.remove('show');
+  document.getElementById('importFile').value='';
+  document.getElementById('importPasteText').value='';
+  document.getElementById('importHint').style.display='block';
+}
+
+function switchImportTab(tab, btn){
+  document.querySelectorAll('.import-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('importTabUpload').style.display = tab==='upload'?'block':'none';
+  document.getElementById('importTabPaste').style.display  = tab==='paste'?'block':'none';
+  resetImportUI();
+}
+
+// ── DRAG & DROP ──────────────────────────────────────────────
+function initDropZone(){
+  const dz = document.getElementById('dropZone');
+  if(!dz) return;
+  dz.addEventListener('dragover', e=>{e.preventDefault();dz.classList.add('drag-over');});
+  dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e=>{
+    e.preventDefault(); dz.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if(file) processFile(file);
+  });
+}
+
+function handleFileSelect(e){
+  const file = e.target.files[0];
+  if(file) processFile(file);
+}
+
+// ── ОБРАБОТКА ФАЙЛА ──────────────────────────────────────────
+function processFile(file){
+  showParseProgress('Читаю файл: '+file.name, 15);
+  const ext = file.name.split('.').pop().toLowerCase();
+  const reader = new FileReader();
+
+  if(ext==='csv' || ext==='txt'){
+    reader.onload = e => parseTextData(e.target.result);
+    reader.readAsText(file, 'utf-8');
+  } else if(ext==='xlsx' || ext==='xls'){
+    reader.onload = e => parseXLSX(e.target.result);
+    reader.readAsArrayBuffer(file);
+  } else {
+    // Пробуем как текст
+    reader.onload = e => parseTextData(e.target.result);
+    reader.readAsText(file, 'utf-8');
+  }
+}
+
+// ── ПАРСИНГ XLSX ─────────────────────────────────────────────
+function parseXLSX(buffer){
+  showParseProgress('Разбираю Excel...', 35);
+  // Простой XLSX-парсер: извлекаем общий текст из XML внутри ZIP
+  // Используем встроенный способ без библиотек
+  try{
+    // Читаем как текст (fallback)
+    const decoder = new TextDecoder('utf-8');
+    const text = decoder.decode(new Uint8Array(buffer));
+    // Ищем текстовые строки из shared strings
+    const rows = extractRowsFromXLSX(text, buffer);
+    if(rows.length > 0){
+      autoParseRows(rows);
+    } else {
+      showParseProgress('Не удалось прочитать Excel. Попробуй сохранить как CSV.', 100);
+    }
+  }catch(e){
+    toast('Ошибка чтения XLSX: '+e.message, 'warn');
+  }
+}
+
+function extractRowsFromXLSX(text, buffer){
+  // Метод 1: если это XML-based xlsx — ищем <v> теги
+  const rows = [];
+  // Ищем строки в формате sharedStrings
+  const strMatch = text.match(/<t[^>]*>([^<]+)<\/t>/g);
+  if(strMatch && strMatch.length > 5){
+    const strings = strMatch.map(m=>m.replace(/<[^>]+>/g,''));
+    // Группируем по ~5 колонок
+    const COLS = Math.min(8, Math.max(3, Math.round(strings.length/20)));
+    for(let i=0;i<strings.length;i+=COLS){
+      rows.push(strings.slice(i,i+COLS));
+    }
+  }
+  return rows;
+}
+
+// ── ПАРСИНГ ТЕКСТА (CSV, TSV, вставленный) ───────────────────
+function parsePastedText(){
+  const text = document.getElementById('importPasteText').value.trim();
+  if(!text){ toast('Вставь данные в поле выше','warn'); return; }
+  parseTextData(text);
+}
+
+function parseTextData(text){
+  showParseProgress('Определяю структуру данных...', 40);
+  // Определяем разделитель
+  const sep = detectSeparator(text);
+  const lines = text.split(/\r?\n/).filter(l=>l.trim().length>0);
+  const rows  = lines.map(l=>l.split(sep).map(cell=>cell.trim().replace(/^["']|["']$/g,'')));
+  if(rows.length < 2){ toast('Слишком мало данных','warn'); return; }
+  showParseProgress('Распознаю колонки...', 60);
+  setTimeout(()=>autoParseRows(rows), 100);
+}
+
+function detectSeparator(text){
+  const first = text.split('\n')[0];
+  const counts = {'\t': (first.match(/\t/g)||[]).length,
+                  ';':  (first.match(/;/g)||[]).length,
+                  ',':  (first.match(/,/g)||[]).length,
+                  '|':  (first.match(/\|/g)||[]).length};
+  return Object.keys(counts).reduce((a,b)=>counts[a]>counts[b]?a:b);
+}
+
+// ── АВТО-ОПРЕДЕЛЕНИЕ КОЛОНОК ─────────────────────────────────
+function autoParseRows(rows){
+  showParseProgress('Распознаю компании, ИНН, телефоны...', 75);
+
+  // Определяем заголовок
+  let dataStart = 0;
+  const firstRow = rows[0].join(' ').toLowerCase();
+  const isHeader = /название|компания|клиент|инн|телефон|имя|наименование|phone|name|inn|сумма|контакт/i.test(firstRow);
+  let colMap = {};
+
+  if(isHeader){
+    dataStart = 1;
+    colMap = detectColumns(rows[0]);
+  } else {
+    colMap = autoDetectColumns(rows.slice(0,5));
+  }
+
+  // Парсим строки
+  const results = [];
+  for(let i=dataStart; i<rows.length; i++){
+    const row = rows[i];
+    if(!row || row.every(c=>!c)) continue;
+    const rec = parseOneRow(row, colMap, rows[0], isHeader);
+    if(rec && rec.name && rec.name.length>2) results.push(rec);
+    if(results.length > 3000) break; // лимит
+  }
+
+  showParseProgress('Готово!', 100);
+  setTimeout(()=>{
+    importParsed = results;
+    showParseResults(results, colMap);
+  }, 300);
+}
+
+function detectColumns(header){
+  const map = {};
+  header.forEach((h,i)=>{
+    const hl = h.toLowerCase();
+    if(/название|компания|клиент|наименование|name|организация/.test(hl)) map.name=i;
+    else if(/инн|inn/.test(hl)) map.inn=i;
+    else if(/телефон|phone|тел|моб/.test(hl)) map.phone=i;
+    else if(/почт|mail|email/.test(hl)) map.email=i;
+    else if(/сумм|выручк|оборот|sum|amount|бюдж/.test(hl)) map.sum=i;
+    else if(/контакт|руков|директор|лицо/.test(hl)) map.contact=i;
+    else if(/инн|огрн/.test(hl)) map.inn=i;
+    else if(/регион|город|адрес/.test(hl)) map.region=i;
+    else if(/категор|тип|вид/.test(hl)) map.type=i;
+  });
+  return map;
+}
+
+function autoDetectColumns(sampleRows){
+  // Без заголовка — определяем по содержимому
+  const map = {};
+  if(!sampleRows[0]) return map;
+  const len = sampleRows[0].length;
+  for(let col=0;col<len;col++){
+    const vals = sampleRows.map(r=>r[col]||'').filter(Boolean);
+    if(!vals.length) continue;
+    const sample = vals.join(' ');
+    // ИНН: 10 или 12 цифр
+    if(vals.some(v=>/^\d{10}$|^\d{12}$/.test(v.trim()))) { map.inn=col; continue; }
+    // Телефон: содержит +7, 8, скобки
+    if(vals.some(v=>/[\+\(]\d|\d{10,11}/.test(v.replace(/\s/g,'')))) { if(map.phone===undefined){map.phone=col;continue;} }
+    // Email
+    if(vals.some(v=>/@/.test(v))) { map.email=col; continue; }
+    // Сумма: только цифры и пробелы
+    if(vals.every(v=>/^[\d\s.,]+$/.test(v)) && vals.some(v=>parseFloat(v.replace(/\s/g,''))>1000)) { map.sum=col; continue; }
+    // Название: длинный текст с буквами
+    if(!map.name && vals.some(v=>v.length>3 && /[а-яА-ЯёЁa-zA-Z]/.test(v))) { map.name=col; continue; }
+  }
+  return map;
+}
+
+function parseOneRow(row, colMap, header, hasHeader){
+  const get = (key) => {
+    if(colMap[key]!==undefined && row[colMap[key]]!==undefined) return row[colMap[key]].trim();
+    return '';
+  };
+
+  // Если нет мэппинга — берём первую непустую как название
+  let name = get('name') || '';
+  if(!name){
+    for(let i=0;i<row.length;i++){
+      if(row[i] && /[а-яА-ЯёЁ]/.test(row[i]) && row[i].length>3){
+        name=row[i].trim(); break;
+      }
+    }
+  }
+  if(!name) name = row[0] || '';
+
+  let inn = get('inn');
+  // Если ИНН не в мэппинге — ищем в строке
+  if(!inn){
+    for(const cell of row){
+      if(/^\d{10}$|^\d{12}$/.test((cell||'').trim())){inn=(cell||'').trim();break;}
+    }
+  }
+
+  let phone = get('phone');
+  if(!phone){
+    for(const cell of row){
+      const cleaned = (cell||'').replace(/\s/g,'');
+      if(/^[\+7|8]?\d{10,11}$/.test(cleaned)){phone=(cell||'').trim();break;}
+    }
+  }
+
+  let email = get('email');
+  if(!email){
+    for(const cell of row){
+      if(/@/.test(cell||'')){email=(cell||'').trim();break;}
+    }
+  }
+
+  let sumRaw = get('sum');
+  let sum = 0;
+  if(sumRaw) sum = parseFloat(sumRaw.replace(/[\s,]/g,'')) || 0;
+  // Ищем числа > 1000 как сумму
+  if(!sum){
+    for(const cell of row){
+      const n = parseFloat((cell||'').replace(/[\s,]/g,''));
+      if(n>1000&&n<1e10){sum=n;break;}
+    }
+  }
+
+  // Определяем ABC по сумме
+  let abc = 'C';
+  if(sum>500000) abc='A';
+  else if(sum>100000) abc='B';
+
+  // Количество операций
+  let cnt = 1;
+  const cntRaw = get('cnt');
+  if(cntRaw) cnt = parseInt(cntRaw)||1;
+
+  return {
+    id: 'imp_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+    name: cleanName(name),
+    inn: inn||'',
+    phone: phone||'',
+    email: email||'',
+    sum: sum||0,
+    cnt: cnt,
+    abc: abc,
+    src: importMode==='competitors'?'competitor':'own',
+    mgr: 'rand', // будет назначен при импорте
+    mo: 0,
+    tag: importMode==='competitors'?'🎯':'💼',
+    last_active: 'Импорт',
+    months_inactive: 3,
+    raw: row.join(' | ').slice(0,100),
+  };
+}
+
+function cleanName(name){
+  return name
+    .replace(/^(ООО|ОАО|ЗАО|ИП|АО|ПАО|НКО|ТОО|ФГУ|ФГУП|МУП|МУ)\s*/i,'$1 ')
+    .replace(/["'«»]/g,'')
+    .replace(/\s+/g,' ')
+    .trim()
+    .slice(0,80);
+}
+
+// ── ОТОБРАЖЕНИЕ РЕЗУЛЬТАТОВ ──────────────────────────────────
+function showParseResults(results, colMap){
+  if(!results.length){
+    toast('Не удалось распознать данные. Попробуй другой формат.','warn');
+    return;
+  }
+
+  // Статистика
+  const statsEl = document.getElementById('parseStats');
+  statsEl.style.display='flex';
+  const comps = results.length;
+  const withPhone = results.filter(r=>r.phone).length;
+  const withInn   = results.filter(r=>r.inn).length;
+  const withSum   = results.filter(r=>r.sum>0).length;
+  const abcA = results.filter(r=>r.abc==='A').length;
+  statsEl.innerHTML = `
+    <div class="ps-chip"><span class="ps-num" style="color:var(--accent3)">${comps}</span> компаний</div>
+    <div class="ps-chip"><span class="ps-num" style="color:var(--accent)">${withPhone}</span> с телефоном</div>
+    <div class="ps-chip"><span class="ps-num" style="color:var(--text2)">${withInn}</span> с ИНН</div>
+    <div class="ps-chip"><span class="ps-num" style="color:var(--gold)">${withSum}</span> с суммой</div>
+    <div class="ps-chip"><span class="ps-num" style="color:var(--accent3)">${abcA}</span> A-клиентов</div>`;
+
+  // Предупреждение о дублях
+  const existing = new Set(CLIENTS.map(c=>c.inn).filter(Boolean));
+  const dups = results.filter(r=>r.inn&&existing.has(r.inn)).length;
+  const warnEl = document.getElementById('importWarnDup');
+  warnEl.style.display = dups>0 ? 'block':'none';
+  if(dups>0) warnEl.textContent = `⚠️ ${dups} компаний уже есть в базе — будут обновлены.`;
+
+  // Предпросмотр таблицы
+  const prevEl = document.getElementById('parsePreview');
+  prevEl.style.display='block';
+  prevEl.classList.add('show');
+
+  const hdr = document.getElementById('parsePreviewHdr');
+  hdr.style.gridTemplateColumns='2fr 1fr 1fr 1fr 1fr';
+  hdr.innerHTML='<div>Название</div><div>ИНН</div><div>Телефон</div><div>Сумма</div><div>ABC</div>';
+
+  const rows = document.getElementById('parsePreviewRows');
+  rows.innerHTML = results.slice(0,20).map(r=>`
+    <div class="pp-row" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr">
+      <div style="font-size:.76rem;font-weight:500">${r.name}</div>
+      <div style="font-size:.68rem;color:var(--text3)">${r.inn||'—'}</div>
+      <div style="font-size:.68rem;color:var(--text2)">${r.phone||r.email||'—'}</div>
+      <div style="font-size:.7rem;color:var(--gold)">${r.sum>0?r.sum.toLocaleString()+' р':'—'}</div>
+      <div><span class="pp-badge pb-${r.abc.toLowerCase()}">${r.abc}</span></div>
+    </div>`).join('');
+  if(results.length>20){
+    rows.innerHTML += `<div style="text-align:center;padding:8px;font-size:.7rem;color:var(--text3)">... и ещё ${results.length-20} записей</div>`;
+  }
+
+  // Назначение менеджеров
+  document.getElementById('mgrAssignWrap').style.display='block';
+
+  // Кнопки действий
+  const actEl = document.getElementById('importActionBtns');
+  actEl.style.display='flex';
+  document.getElementById('importConfirmBtn').textContent =
+    `✅ Добавить ${results.length} ${importMode==='competitors'?'конкурентов':'клиентов'} в игру`;
+
+  document.getElementById('importHint').style.display='none';
+  document.getElementById('parseProgress').classList.remove('show');
+}
+
+// ── НАЗНАЧЕНИЕ МЕНЕДЖЕРА ─────────────────────────────────────
+function assignImportTo(mgrId){
+  importAssignTo = mgrId;
+  document.querySelectorAll('#mgrAssignBtns button').forEach(b=>{
+    b.style.borderColor='';b.style.color='';
+  });
+  const btn = event.target;
+  btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';
+
+  // Показываем кто сколько получит
+  const grid = document.getElementById('mgrAssignGrid');
+  const total = importParsed.length;
+  if(mgrId==='auto'){
+    const mgrs = Object.entries(S.mgrs);
+    grid.innerHTML = mgrs.map(([id,m])=>{
+      const n = Math.ceil(total/mgrs.length);
+      return`<div class="ma-row">
+        <div class="ma-avatar" style="background:${m.c||'#aaa'}22;border:2px solid ${m.c||'#aaa'}44">${m.e||'👤'}</div>
+        <div class="ma-name">${m.n}</div>
+        <div class="ma-count">~${n}</div>
+      </div>`;
+    }).join('');
+    grid.style.display='grid';
+  } else {
+    const m = S.mgrs[mgrId];
+    if(m){
+      grid.innerHTML=`<div class="ma-row">
+        <div class="ma-avatar" style="background:${m.c||'#aaa'}22;border:2px solid ${m.c||'#aaa'}44">${m.e||'👤'}</div>
+        <div class="ma-name">${m.n}</div>
+        <div class="ma-count">${total} клиентов</div>
+      </div>`;
+      grid.style.display='grid';
+    }
+  }
+}
+
+// ── ПОДТВЕРЖДЕНИЕ ИМПОРТА ────────────────────────────────────
+function confirmImport(){
+  if(!importParsed.length){ toast('Нет данных для импорта','warn'); return; }
+
+  const mgrs = Object.keys(S.mgrs);
+  let mgrIdx = 0;
+
+  let added=0, updated=0;
+  importParsed.forEach((rec,i)=>{
+    // Назначаем менеджера
+    if(importAssignTo==='auto'){
+      rec.mgr = mgrs[i%mgrs.length];
+    } else {
+      rec.mgr = importAssignTo;
+    }
+
+    // Проверяем дубль по ИНН
+    const existIdx = CLIENTS.findIndex(c=>c.inn&&c.inn===rec.inn);
+    if(existIdx>=0){
+      // Обновляем существующего
+      const ex = CLIENTS[existIdx];
+      ex.phone = rec.phone||ex.phone;
+      ex.email = rec.email||ex.email;
+      if(rec.sum>ex.sum) ex.sum=rec.sum;
+      if(rec.cnt>ex.cnt) ex.cnt=rec.cnt;
+      updated++;
+    } else {
+      CLIENTS.push(rec);
+      added++;
+    }
+  });
+
+  // Перегенерируем задачи
+  S.tasks = genTasks(S.cur);
+  closeImport();
+  rAll();
+
+  toast(`✅ Импорт: +${added} новых, ${updated} обновлено!`,'success');
+  setTimeout(()=>toast(`📋 Новые клиенты распределены по менеджерам`,'achievement'),500);
+
+  // Логируем
+  globalLog({
+    client: `Импорт ${importParsed.length} записей`,
+    action: importMode==='competitors'?'🎯 База конкурентов импортирована':'📥 База клиентов импортирована',
+    comment: `+${added} новых, ${updated} обновлено. Источник: ${importMode}`,
+    pts:0, status:'done', type:'import'
+  });
+}
+
+function showParseProgress(label, pct){
+  const el = document.getElementById('parseProgress');
+  el.classList.add('show');
+  document.getElementById('parseLabel').textContent = label;
+  document.getElementById('parseFill').style.width = pct+'%';
+}
+
+
+load();
+updateTimer();
+updateClock();
+setInterval(updateClock,1000);
+setInterval(updateTimer,60000);
+initAuth();
+
+</script>
+</body>
+</html>
